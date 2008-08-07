@@ -13,7 +13,7 @@
 getFixRobIC(Distr, risk, neighbor, ...)
 
 \S4method{getFixRobIC}{Norm,fiUnOvShoot,UncondNeighborhood}(Distr, risk, neighbor, 
-            sampleSize, upper, maxiter, tol, warn, Algo, cont)
+          sampleSize, upper, maxiter, tol, warn, Algo, cont)
 }
 \arguments{
   \item{Distr}{ object of class \code{"Distribution"}. }
@@ -28,7 +28,12 @@ getFixRobIC(Distr, risk, neighbor, ...)
   \item{Algo}{ "A" or "B". }
   \item{cont}{ "left" or "right". }  
 }
-%\details{}
+\details{
+Computation of the optimally robust IC in sense of Huber (1968) which
+is also treated in Kohl (2005). The Algorithm used to compute the exact
+finite sample risk is introduced and explained in Kohl (2005). It is
+based on FFT.
+}
 \value{The optimally robust IC is computed.}
 \section{Methods}{
 \describe{
@@ -40,12 +45,14 @@ getFixRobIC(Distr, risk, neighbor, ...)
   Huber, P.J. (1968) Robust Confidence Limits. Z. Wahrscheinlichkeitstheor.
   Verw. Geb. \bold{10}:269--278.
 
+  Rieder, H. (1980) Estimates derived from robust tests. Ann. Stats. \bold{8}: 106-115.
+
   Kohl, M. (2005) \emph{Numerical Contributions to the Asymptotic Theory of Robustness}. 
   Bayreuth: Dissertation.
 }
 \author{Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 %\note{}
-\seealso{\code{\link{FixRobModel-class}}}
+\seealso{\code{\link[RobAStBase]{FixRobModel-class}}}
 %\examples{}
 \concept{influence curve}
-\keyword{}
+\keyword{robust}

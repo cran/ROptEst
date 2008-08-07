@@ -1,7 +1,6 @@
 \name{optIC}
 \alias{optIC}
 \alias{optIC-methods}
-\alias{optIC,L2ParamFamily,asCov-method}
 \alias{optIC,InfRobModel,asRisk-method}
 \alias{optIC,InfRobModel,asUnOvShoot-method}
 \alias{optIC,FixRobModel,fiUnOvShoot-method}
@@ -13,16 +12,18 @@
 \usage{
 optIC(model, risk, ...)
 
-\S4method{optIC}{L2ParamFamily,asCov}(model, risk)
-
-\S4method{optIC}{InfRobModel,asRisk}(model, risk, z.start = NULL, A.start = NULL, upper = 1e4, 
-             maxiter = 50, tol = .Machine$double.eps^0.4, warn = TRUE)
+\S4method{optIC}{InfRobModel,asRisk}(model, risk, z.start = NULL, A.start = NULL,
+                                     upper = 1e4, maxiter = 50, 
+                                     tol = .Machine$double.eps^0.4, warn = TRUE, 
+                                     noLow = FALSE, verbose = FALSE)
 
 \S4method{optIC}{InfRobModel,asUnOvShoot}(model, risk, upper = 1e4, maxiter = 50, 
-             tol = .Machine$double.eps^0.4, warn = TRUE)
+                                          tol = .Machine$double.eps^0.4, warn = TRUE)
 
-\S4method{optIC}{FixRobModel,fiUnOvShoot}(model, risk, sampleSize, upper = 1e4, maxiter = 50, 
-             tol = .Machine$double.eps^0.4, warn = TRUE, Algo = "A", cont = "left")
+\S4method{optIC}{FixRobModel,fiUnOvShoot}(model, risk, sampleSize, upper = 1e4, 
+                                          maxiter = 50, tol = .Machine$double.eps^0.4, 
+                                          warn = TRUE, Algo = "A", cont = "left",
+                                          verbose = FALSE)
 }
 \arguments{
   \item{model}{ probability model. }
@@ -37,6 +38,8 @@ optIC(model, risk, ...)
   \item{sampleSize}{ integer: sample size. }
   \item{Algo}{ "A" or "B". }
   \item{cont}{ "left" or "right". }
+  \item{noLow}{ logical: is lower case to be computed? }
+  \item{verbose}{ logical: if \code{TRUE}, some messages are printed }
 }
 \details{ In case of the finite-sample risk \code{"fiUnOvShoot"} one can choose
   between two algorithms for the computation of this risk where the least favorable
@@ -45,10 +48,6 @@ optIC(model, risk, ...)
 \value{Some optimally robust IC is computed.}
 \section{Methods}{
 \describe{
-  \item{model = "L2ParamFamily", risk = "asCov"}{ computes
-    classical optimal influence curve for L2 differentiable 
-    parametric families.}
-
   \item{model = "InfRobModel", risk = "asRisk"}{ 
     computes optimally robust influence curve for 
     robust models with infinitesimal neighborhoods and
@@ -77,7 +76,7 @@ optIC(model, risk, ...)
 }
 \author{Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 %\note{}
-\seealso{\code{\link{InfluenceCurve-class}}, \code{\link{RiskType-class}}}
+\seealso{\code{\link[RobAStBase]{InfluenceCurve-class}}, \code{\link[distrMod]{RiskType-class}}}
 \examples{
 B <- BinomFamily(size = 25, prob = 0.25) 
 
@@ -88,4 +87,4 @@ checkIC(IC0, B)
 }
 \concept{robust influence curve}
 \concept{influence curve}
-\keyword{}
+\keyword{robust}

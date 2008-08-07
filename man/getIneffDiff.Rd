@@ -12,8 +12,10 @@
 \usage{
 getIneffDiff(radius, L2Fam, neighbor, risk, ...)
 
-\S4method{getIneffDiff}{numeric,L2ParamFamily,UncondNeighborhood,asMSE}(radius, L2Fam, neighbor, risk, loRad, upRad, 
-            loRisk, upRisk, z.start = NULL, A.start = NULL, upper.b, MaxIter, eps, warn)
+\S4method{getIneffDiff}{numeric,L2ParamFamily,UncondNeighborhood,asMSE}(
+          radius, L2Fam, neighbor, risk, loRad, upRad, loRisk, upRisk, 
+          z.start = NULL, A.start = NULL, upper.b, MaxIter, eps, warn,
+          loNorm = NULL, upNorm = NULL, verbose = FALSE)
 }
 \arguments{
   \item{radius}{ neighborhood radius. }
@@ -31,6 +33,13 @@ getIneffDiff(radius, L2Fam, neighbor, risk, ...)
   \item{MaxIter}{ the maximum number of iterations }
   \item{eps}{ the desired accuracy (convergence tolerance).}
   \item{warn}{ logical: print warnings. }  
+  \item{loNorm}{object of class \code{"NormType"}; used in selfstandardization
+                to evaluate the bias of the current IC in the norm of the lower 
+                bound}  
+  \item{upNorm}{object of class \code{"NormType"}; used in selfstandardization
+                to evaluate the bias of the current IC in the norm of the upper 
+                bound}  
+  \item{verbose}{ logical: if \code{TRUE}, some messages are printed }
 }
 %\details{}
 \value{The inefficieny difference between the left and
@@ -44,6 +53,9 @@ getIneffDiff(radius, L2Fam, neighbor, risk, ...)
      the boundaries of a given radius interval.}
 }}
 \references{ 
+  Rieder, H., Kohl, M. and Ruckdeschel, P. (2008) The Costs of not Knowing
+  the Radius. Statistical Methods and Applications, \emph{17}(1) 13-40.
+
   Rieder, H., Kohl, M. and Ruckdeschel, P. (2001) The Costs of not Knowing
   the Radius. Submitted. Appeared as discussion paper Nr. 81. 
   SFB 373 (Quantification and Simulation of Economic Processes),
@@ -57,4 +69,4 @@ getIneffDiff(radius, L2Fam, neighbor, risk, ...)
 %\note{}
 \seealso{\code{\link{radiusMinimaxIC}}, \code{\link{leastFavorableRadius}}}
 %\examples{}
-\keyword{}
+\keyword{robust}

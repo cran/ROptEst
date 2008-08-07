@@ -5,47 +5,83 @@ setMethod("getInfRobIC", signature(L2deriv = "UnivariateDistribution",
                                    risk = "asHampel", 
                                    neighbor = "UncondNeighborhood"),
     function(L2deriv, risk, neighbor, symm, Finfo, trafo, 
-             upper, maxiter, tol, warn){
+             upper, maxiter, tol, warn, noLow = FALSE, verbose = FALSE){
+        biastype <- biastype(risk)
+        normtype <- normtype(risk)
+
         A <- trafo / E(L2deriv, function(x){x^2})
         b <- risk@bound
+
         bmax <- abs(as.vector(A))*max(abs(q(L2deriv)(0)), q(L2deriv)(1))
         if(b >= bmax){
             if(warn) cat("'b >= maximum asymptotic bias' => (classical) optimal IC\n", 
                          "in sense of Cramer-Rao bound is returned\n")
             res <- getInfRobIC(L2deriv = L2deriv, risk = asCov(), 
-                        neighbor = neighbor, Finfo = Finfo, trafo = trafo)
+                               neighbor = neighbor, Finfo = Finfo, trafo = trafo,
+                               verbose = verbose)
+            res <- c(res, list(biastype = biastype, normtype = NormType()))
+            Cov <- res$risk$asCov
+            r <- neighbor@radius
+            res$risk$asBias <- list(value = b, biastype = biastype, 
+                                   normtype = normtype, 
+                                   neighbortype = class(neighbor))
+            res$risk$asMSE <- list(value = Cov + r^2*b^2, 
+                                   r = r,
+                                   at = neighbor)
             return(res)
         }
 
-        bmin <- getAsRisk(risk = asBias(), L2deriv = L2deriv, neighbor = neighbor, 
-                          trafo = trafo)$asBias
+        if(!noLow){
+            res <- getInfRobIC(L2deriv = L2deriv, risk = asBias(biastype = biastype), 
+                               neighbor = neighbor, symm = symm,  
+                               trafo = trafo, maxiter = maxiter, tol = tol, Finfo = Finfo,
+                               warn = warn, verbose = verbose)
+            bmin <- res$b
+            cat("minimal bound:\t", bmin, "\n")
+         }else bmin <- b/2
+
         if(b <= bmin){
             if(warn) cat("'b <= minimum asymptotic bias'\n",
                          "=> the minimum asymptotic bias (lower case) solution is returned\n")
-            res <- getInfRobIC(L2deriv = L2deriv, risk = asBias(), 
-                            neighbor = neighbor, symm = symm, 
-                            trafo = trafo, maxiter = maxiter, tol = tol)
             Risk <- list(asMSE = res$risk$asCov + neighbor@radius^2*bmin^2)
             res$risk <- c(Risk, res$risk)
             return(res)
         }
+#        bmin <- getAsRisk(risk = asBias(biastype = biastype, normtype = normtype), 
+#                          L2deriv = L2deriv, neighbor = neighbor, 
+#                          biastype = biastype, trafo = trafo, Finfo = Finfo,
+#                          warn = warn)$asBias
+#        if(b <= bmin){
+#            if(warn) cat("'b <= minimum asymptotic bias'\n",
+#                         "=> the minimum asymptotic bias (lower case) solution is returned\n")
+#            res <- getInfRobIC(L2deriv = L2deriv, risk = asBias(biastype = biastype), 
+#                            neighbor = neighbor, symm = symm,  
+#                            trafo = trafo, maxiter = maxiter, tol = tol, Finfo = Finfo,
+#                            warn = warn)
+#            Risk <- list(asMSE = res$risk$asCov + neighbor@radius^2*bmin^2)
+#            res$risk <- c(Risk, res$risk)
+#            return(res)
+#        }
         c0 <- b/as.vector(A)
         if(is(symm, "SphericalSymmetry")) 
             S <- symm@SymmCenter == 0
         else
             S <- FALSE
-        z <- getInfCent(L2deriv = L2deriv, neighbor = neighbor, 
-                    clip = c0, cent = 0, trafo = trafo, tol.z = tol, symm = S)
+        z <- getInfCent(L2deriv = L2deriv, neighbor = neighbor,  
+                        biastype = biastype, clip = c0, cent = 0, 
+                        trafo = trafo, tol.z = tol, symm = S)
         iter <- 0
         repeat{
             iter <- iter + 1
             A.old <- A
             z.old <- z
             A <- getInfStand(L2deriv = L2deriv, neighbor = neighbor, 
-                        clip = c0, cent = z, trafo = trafo)
+                         biastype = biastype,
+                         clip = c0, cent = z, trafo = trafo)
             c0 <- b/as.vector(A)
             z <- getInfCent(L2deriv = L2deriv, neighbor = neighbor, 
-                        clip = c0, cent = z, trafo = trafo, tol.z = tol, symm = S)
+                         biastype = biastype,
+                         clip = c0, cent = z, trafo = trafo, tol.z = tol, symm = S)
             if(max(abs(as.vector(A-A.old)), abs(z-z.old)) < tol) break
             if(iter > maxiter){
                 cat("maximum iterations reached!\n", "achieved precision:\t", 
@@ -55,17 +91,55 @@ setMethod("getInfRobIC", signature(L2deriv = "UnivariateDistribution",
         }
         info <- paste("optimally robust IC for 'asHampel' with bound =", round(b,3))
         a <- as.vector(A)*z
-        Cov <- getAsRisk(risk = asCov(), L2deriv = L2deriv, neighbor = neighbor, 
-                         clip = b, cent = a, stand = A)$asCov
-        Risk <- list(asCov = Cov, asBias = b, asMSE = Cov + neighbor@radius^2*b^2)
+        Cov <- getInfV(L2deriv = L2deriv, neighbor = neighbor, 
+                       biastype = biastype, clip = c0, cent = z, stand = A)
 
-        return(list(A = A, a = a, b = b, d = NULL, risk = Risk, info = info))
+        # getAsRisk(risk = asHampel(), L2deriv = L2deriv, neighbor = neighbor, 
+        #          biastype = biastype, clip = b, cent = a, stand = A)$asCov
+
+        r <- neighbor@radius
+        Risk <- list(asCov = Cov,
+                     asBias = list(value = b, biastype = biastype, 
+                                   normtype = normtype, 
+                                   neighbortype = class(neighbor)), 
+                     trAsCov = list(value = Cov, normtype = normtype),
+                     asMSE = list(value = Cov + r^2*b^2, 
+                                  r = r,
+                                  at = neighbor))
+
+        if(is(neighbor,"ContNeighborhood")){
+            w <- new("HampelWeight")
+            clip(w) <- b
+            cent(w) <- z 
+            stand(w) <- A
+        }else{
+            w <- new("BdStWeight")
+            clip(w) <- c(0,b)+a
+            stand(w) <- A
+        } 
+        weight(w) <- getweight(w, neighbor = neighbor, biastype = biastype, 
+                               normW = NormType())
+        return(list(A = A, a = a, b = b, d = NULL, risk = Risk, info = info, 
+                    w = w, biastype = biastype, normtype = NormType()))
     })
+
 setMethod("getInfRobIC", signature(L2deriv = "RealRandVariable", 
                                    risk = "asHampel", 
                                    neighbor = "ContNeighborhood"),
     function(L2deriv, risk, neighbor, Distr, DistrSymm, L2derivSymm,
-             L2derivDistrSymm, Finfo, trafo, z.start, A.start, upper, maxiter, tol, warn){
+             L2derivDistrSymm, Finfo, trafo, onesetLM = FALSE,
+             z.start, A.start, upper, maxiter, tol, warn, verbose = FALSE){
+
+        biastype <- biastype(risk)
+        normtype <- normtype(risk)
+        p <- nrow(trafo)
+
+        FI <- solve(trafo%*%solve(Finfo)%*%t(trafo))
+        if(is(normtype,"InfoNorm") || is(normtype,"SelfNorm") ) 
+           {QuadForm(normtype) <- PosSemDefSymmMatrix(FI); normtype(risk) <- normtype}
+
+        std <- if(is(normtype,"QFNorm")) QuadForm(normtype) else diag(p)
+
         if(is.null(z.start)) z.start <- numeric(ncol(trafo))
         if(is.null(A.start)) A.start <- trafo
 
@@ -81,50 +155,50 @@ setMethod("getInfRobIC", signature(L2deriv = "RealRandVariable",
             if(warn) cat("'b >= maximum asymptotic bias' => (classical) optimal IC\n", 
                          "in sense of Cramer-Rao bound is returned\n")
             res <- getInfRobIC(L2deriv = L2deriv, risk = asCov(), neighbor = neighbor, 
-                               Distr = Distr, Finfo = Finfo, trafo = trafo)
+                                Distr = Distr, Finfo = Finfo, trafo = trafo, 
+                                QuadForm = std, verbose = verbose)
+            res <- c(res, list(biastype = biastype, normtype = normtype))
+            trAsCov <- sum(diag(std%*%res$risk$asCov)); 
+            r <- neighbor@radius
+            res$risk$trAsCov <- list(value = trAsCov, normtype = normtype)
+            res$risk$asBias <- list(value = b, biastype = biastype, 
+                                   normtype = normtype, 
+                                   neighbortype = class(neighbor))
+            res$risk$asMSE <- list(value = trAsCov + r^2*b^2, 
+                                   r = r,
+                                   at = neighbor)
             return(res)
         }
-        bmin <- getAsRisk(risk = asBias(), L2deriv = L2deriv, neighbor = neighbor, 
-                          Distr = Distr, L2derivDistrSymm = L2derivDistrSymm, 
-                          trafo = trafo, z.start = z.start, A.start = A.start, 
-                          maxiter = maxiter, tol = tol)$asBias
+
+        res <- getInfRobIC(L2deriv = L2deriv, 
+                     risk = asBias(biastype = biastype, normtype = normtype), 
+                     neighbor = neighbor, Distr = Distr, DistrSymm = DistrSymm, 
+                     L2derivSymm = L2derivSymm, L2derivDistrSymm = L2derivDistrSymm, 
+                     z.start = z.start, A.start = A.start, trafo = trafo, 
+                     maxiter = maxiter, tol = tol, warn = warn, Finfo = Finfo, 
+                     verbose = verbose)
+        bmin <- res$b
+
         cat("minimal bound:\t", bmin, "\n")
         if(b <= bmin){
             if(warn) cat("'b <= minimum asymptotic bias'\n",
                          "=> the minimum asymptotic bias (lower case) solution is returned\n")
-            res <- getInfRobIC(L2deriv = L2deriv, risk = asBias(), neighbor = neighbor, 
-                               Distr = Distr, DistrSymm = DistrSymm, L2derivSymm = L2derivSymm,
-                               L2derivDistrSymm = L2derivDistrSymm, z.start = z.start, 
-                               A.start = A.start, trafo = trafo, maxiter = maxiter, 
-                               tol = tol, warn = warn)
+
+            asMSE <- sum(diag(std%*%res$risk$asCov)) + neighbor@radius^2*bmin^2
+            if(!is.null(res$risk$asMSE)) res$risk$asMSE <- asMSE 
+               else     res$risk <- c(list(asMSE = asMSE), res$risk)
+
             return(res)
         }
-        nrvalues <- length(L2deriv)
-        z.comp <- rep(TRUE, nrvalues)
-        A.comp <- matrix(1, ncol = nrvalues, nrow = nrvalues)
-        for(i in 1:nrvalues){
-            if(is(L2derivDistrSymm[[i]], "SphericalSymmetry"))
-                if(L2derivDistrSymm[[i]]@SymmCenter == 0){
-                    z.comp[i] <- FALSE
-                    A.comp[i,i] <- 2
-                }
-        }
-        for(i in 1:(nrvalues-1))
-            for(j in (i+1):nrvalues){
-                if(z.comp[i] | z.comp[j]){ 
-                    if(is(DistrSymm, "SphericalSymmetry")){
-                        if((is(L2derivSymm[[i]], "OddSymmetric") & is(L2derivSymm[[j]], "EvenSymmetric"))
-                           | (is(L2derivSymm[[j]], "OddSymmetric") & is(L2derivSymm[[i]], "EvenSymmetric")))
-                            if((L2derivSymm[[i]]@SymmCenter == L2derivSymm[[j]]@SymmCenter)
-                               & (L2derivSymm[[i]]@SymmCenter == DistrSymm@SymmCenter))
-                                A.comp[i,j] <- 0
-                    }else{
-                        A.comp[i,j] <- 2
-                    }
-                }
-            }
-        A.comp[col(A.comp) < row(A.comp)] <- A.comp[col(A.comp) > row(A.comp)]
 
+        comp <- .getComp(L2deriv, DistrSymm, L2derivSymm,
+             L2derivDistrSymm)
+
+        z.comp <- comp$"z.comp"
+        A.comp <- comp$"A.comp"
+
+        w <- new("HampelWeight")
+        clip(w) <- b
         z <- z.start
         A <- A.start
         iter <- 0
@@ -132,23 +206,66 @@ setMethod("getInfRobIC", signature(L2deriv = "RealRandVariable",
             iter <- iter + 1
             z.old <- z
             A.old <- A
-            z <- getInfCent(L2deriv = L2deriv, neighbor = neighbor, Distr = Distr, 
-                            z.comp = z.comp, stand = A, cent = z, clip = b)
-            A <- getInfStand(L2deriv = L2deriv, neighbor = neighbor, clip = b, cent = z, 
-                             A.comp = A.comp, trafo = trafo, Distr = Distr, stand = A)
+            cent(w) <- z 
+            stand(w) <- A 
+
+            weight(w) <- getweight(w, neighbor = neighbor, biastype = biastype, 
+                                   normW = normtype)
+
+
+            z <- getInfCent(L2deriv = L2deriv, neighbor = neighbor,  
+                            biastype = biastype, Distr = Distr, z.comp = z.comp, 
+                            w = w)
+            A <- getInfStand(L2deriv = L2deriv, neighbor = neighbor, 
+                         biastype = biastype, Distr = Distr, A.comp = A.comp, 
+                         cent = z, trafo = trafo, w = w)
+
+            normtype.old <- normtype
+            if(is(normtype,"SelfNorm")){
+               normtype(risk) <- normtype <- updateNorm(normtype = normtype,  
+                   L2 = L2deriv, neighbor = neighbor, biastype = biastype,
+                   Distr = Distr, V.comp = A.comp, cent = z, stand = A, w = w)
+               std <- QuadForm(normtype)
+            }
+
             prec <- max(max(abs(A-A.old)), max(abs(z-z.old)))
-            cat("current precision in IC algo:\t", prec, "\n")
+            if(verbose)
+                cat("current precision in IC algo:\t", prec, "\n")
             if(prec < tol) break
             if(iter > maxiter){
                 cat("maximum iterations reached!\n", "achieved precision:\t", prec, "\n")
                 break
             }
         }
+        if (onesetLM){
+            cent(w) <- z 
+            stand(w) <- A 
+
+            weight(w) <- getweight(w, neighbor = neighbor, biastype = biastype, 
+                                   normW = normtype)
+        }
+        else normtype <- normtype.old
+
         info <- paste("optimally robust IC for 'asHampel' with bound =", round(b,3))
         a <- as.vector(A %*% z)
-        Cov <- getAsRisk(risk = asCov(), L2deriv = L2deriv, neighbor = neighbor, 
-                           Distr = Distr, clip = b, cent = a, stand = A)$asCov
-        Risk <- list(asCov = Cov, asBias = b, asMSE = sum(diag(Cov)) + neighbor@radius^2*b^2)
+        Cov <- getInfV(L2deriv = L2deriv, neighbor = neighbor, 
+                       biastype = biastype, Distr = Distr, 
+                       V.comp = A.comp, cent = a, 
+                       stand = A, w = w)
+        #getAsRisk(risk = asCov(), L2deriv = L2deriv, neighbor = neighbor, 
+        #          biastype = biastype, Distr = Distr, clip = b, cent = a, 
+        #          stand = A)$asCov
+        trAsCov <- sum(diag(std%*%Cov)); r <- neighbor@radius
+        Risk <- list(trAsCov = list(value = trAsCov, 
+                                    normtype = normtype),
+                     asCov = Cov,  
+                     asBias = list(value = b, biastype = biastype, 
+                                   normtype = normtype, 
+                                   neighbortype = class(neighbor)),
+                     asMSE = list(value = trAsCov + r^2*b^2, 
+                                  r = r,
+                                  at = neighbor))
 
-        return(list(A = A, a = a, b = b, d = NULL, risk = Risk, info = info))
+        return(list(A = A, a = a, b = b, d = NULL, risk = Risk, info = info, 
+                    w = w, biastype = biastype, normtype = normtype))
     })

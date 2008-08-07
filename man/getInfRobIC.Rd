@@ -4,8 +4,7 @@
 \alias{getInfRobIC,UnivariateDistribution,asCov,ContNeighborhood-method}
 \alias{getInfRobIC,UnivariateDistribution,asCov,TotalVarNeighborhood-method}
 \alias{getInfRobIC,RealRandVariable,asCov,ContNeighborhood-method}
-\alias{getInfRobIC,UnivariateDistribution,asBias,ContNeighborhood-method}
-\alias{getInfRobIC,UnivariateDistribution,asBias,TotalVarNeighborhood-method}
+\alias{getInfRobIC,UnivariateDistribution,asBias,UncondNeighborhood-method}
 \alias{getInfRobIC,RealRandVariable,asBias,ContNeighborhood-method}
 \alias{getInfRobIC,UnivariateDistribution,asHampel,UncondNeighborhood-method}
 \alias{getInfRobIC,RealRandVariable,asHampel,ContNeighborhood-method}
@@ -22,32 +21,30 @@
 \usage{
 getInfRobIC(L2deriv, risk, neighbor, ...)
 
-\S4method{getInfRobIC}{UnivariateDistribution,asCov,ContNeighborhood}(L2deriv, risk, neighbor, Finfo, trafo)
+\S4method{getInfRobIC}{UnivariateDistribution,asCov,ContNeighborhood}(L2deriv, risk, neighbor, Finfo, trafo, verbose = FALSE)
 
-\S4method{getInfRobIC}{UnivariateDistribution,asCov,TotalVarNeighborhood}(L2deriv, risk, neighbor, Finfo, trafo)
+\S4method{getInfRobIC}{UnivariateDistribution,asCov,TotalVarNeighborhood}(L2deriv, risk, neighbor, Finfo, trafo, verbose = FALSE)
 
-\S4method{getInfRobIC}{RealRandVariable,asCov,ContNeighborhood}(L2deriv, risk, neighbor, Distr, Finfo, trafo)
+\S4method{getInfRobIC}{RealRandVariable,asCov,ContNeighborhood}(L2deriv, risk, neighbor, Distr, Finfo, trafo, 
+                       QuadForm = diag(nrow(trafo)), verbose = FALSE)
 
-\S4method{getInfRobIC}{UnivariateDistribution,asBias,ContNeighborhood}(L2deriv, risk, neighbor, symm, Finfo, trafo, 
-             upper, maxiter, tol, warn)
-
-\S4method{getInfRobIC}{UnivariateDistribution,asBias,TotalVarNeighborhood}(L2deriv, risk, neighbor, symm, Finfo, trafo, 
-             upper, maxiter, tol, warn)
+\S4method{getInfRobIC}{UnivariateDistribution,asBias,UncondNeighborhood}(L2deriv, risk, neighbor, symm, trafo, 
+             maxiter, tol, warn, Finfo, verbose = FALSE, ...)
 
 \S4method{getInfRobIC}{RealRandVariable,asBias,ContNeighborhood}(L2deriv, risk, neighbor, Distr, DistrSymm, L2derivSymm, 
-             L2derivDistrSymm, Finfo, z.start, A.start, trafo, upper, maxiter, tol, warn)
+             L2derivDistrSymm, z.start, A.start, Finfo, trafo, maxiter, tol, warn, verbose = FALSE, ...)
 
 \S4method{getInfRobIC}{UnivariateDistribution,asHampel,UncondNeighborhood}(L2deriv, risk, neighbor, symm, Finfo, trafo, 
-             upper, maxiter, tol, warn)
+             upper, maxiter, tol, warn, noLow = FALSE, verbose = FALSE)
 
 \S4method{getInfRobIC}{RealRandVariable,asHampel,ContNeighborhood}(L2deriv, risk, neighbor, Distr, DistrSymm, L2derivSymm, 
-             L2derivDistrSymm, Finfo, z.start, A.start, trafo, upper, maxiter, tol, warn)
+             L2derivDistrSymm, Finfo, trafo, onesetLM = FALSE, z.start, A.start, upper, maxiter, tol, warn, verbose = FALSE)
 
 \S4method{getInfRobIC}{UnivariateDistribution,asGRisk,UncondNeighborhood}(L2deriv, risk, neighbor, symm, Finfo, trafo, 
-             upper, maxiter, tol, warn)
+             upper, maxiter, tol, warn, noLow = FALSE, verbose = FALSE)
 
-\S4method{getInfRobIC}{RealRandVariable,asGRisk,ContNeighborhood}(L2deriv, risk, neighbor, Distr, DistrSymm, L2derivSymm, 
-             L2derivDistrSymm, Finfo, z.start, A.start, trafo, upper, maxiter, tol, warn)
+\S4method{getInfRobIC}{RealRandVariable,asGRisk,ContNeighborhood}(L2deriv, risk, neighbor,  Distr, DistrSymm, L2derivSymm, 
+             L2derivDistrSymm, Finfo, trafo, onesetLM = FALSE, z.start, A.start, upper, maxiter, tol, warn, verbose = FALSE)
 
 \S4method{getInfRobIC}{UnivariateDistribution,asUnOvShoot,UncondNeighborhood}(L2deriv, risk, neighbor, symm, Finfo, trafo, 
              upper, maxiter, tol, warn)
@@ -71,6 +68,12 @@ getInfRobIC(L2deriv, risk, neighbor, ...)
   \item{maxiter}{ the maximum number of iterations. }
   \item{tol}{ the desired accuracy (convergence tolerance).}
   \item{warn}{ logical: print warnings. }
+  \item{noLow}{ logical: is lower case to be computed? }
+  \item{onesetLM}{ logical: use one set of Lagrange multipliers? }
+  \item{QuadForm}{ matrix of (or which may coerced to) class 
+                  \code{PosSemDefSymmMatrix} for use of different 
+                  (standardizing) norm }
+  \item{verbose}{ logical: if \code{TRUE}, some messages are printed }
 }
 %\details{}
 \value{The optimally robust IC is computed.}
@@ -93,12 +96,7 @@ getInfRobIC(L2deriv, risk, neighbor, ...)
     (\eqn{k > 1}) where the underlying distribution is univariate. }
 
   \item{L2deriv = "UnivariateDistribution", risk = "asBias", 
-        neighbor = "ContNeighborhood"}{ 
-    computes the bias optimal influence curve for L2 differentiable 
-    parametric families with unknown one-dimensional parameter. }
-
-  \item{L2deriv = "UnivariateDistribution", risk = "asBias", 
-        neighbor = "TotalVarNeighborhood"}{ 
+        neighbor = "UncondNeighborhood"}{ 
     computes the bias optimal influence curve for L2 differentiable 
     parametric families with unknown one-dimensional parameter. }
 
@@ -137,16 +135,22 @@ getInfRobIC(L2deriv, risk, neighbor, ...)
     asymptotic under-/overshoot risk. }
 }}
 \references{
-  Rieder, H. (1980) Estimates derived from robust tests. Ann. Stats. \bold{8}: 106--115.
+  Rieder, H. (1980) Estimates derived from robust tests. Ann. Stats. \bold{8}: 106-115.
 
   Rieder, H. (1994) \emph{Robust Asymptotic Statistics}. New York: Springer.
+
+  Ruckdeschel, P. and Rieder, H. (2004) Optimal Influence Curves for
+  General Loss Functions. Statistics & Decisions \bold{22}: 201-223.
+
+  Ruckdeschel, P. (2005) Optimally One-Sided Bounded Influence Curves.
+  Mathematical Methods in Statistics \emph{14}(1), 105-131.
 
   Kohl, M. (2005) \emph{Numerical Contributions to the Asymptotic Theory of Robustness}. 
   Bayreuth: Dissertation.
 }
 \author{Matthias Kohl \email{Matthias.Kohl@stamats.de}}
 %\note{}
-\seealso{\code{\link{InfRobModel-class}}}
+\seealso{\code{\link[RobAStBase]{InfRobModel-class}}}
 %\examples{}
 \concept{influence curve}
-\keyword{}
+\keyword{robust}
