@@ -6,10 +6,16 @@
   parametric families via k-step construction.
 }
 \usage{
-roptest(x, L2Fam, eps, eps.lower, eps.upper, initial.est, 
-        neighbor = ContNeighborhood(), risk = asMSE(), steps = 1, 
-        distance = CvMDist, startPar = NULL, verbose = FALSE, 
-        useLast = getRobAStBaseOption("kStepUseLast"), ...)
+roptest(x, L2Fam, eps, eps.lower, eps.upper, fsCor = 1, initial.est, 
+        neighbor = ContNeighborhood(), risk = asMSE(), steps = 1L, 
+        distance = CvMDist, startPar = NULL, verbose = NULL,
+        OptOrIter = "iterate",
+        useLast = getRobAStBaseOption("kStepUseLast"),
+        withUpdateInKer = getRobAStBaseOption("withUpdateInKer"),
+        IC.UpdateInKer = getRobAStBaseOption("IC.UpdateInKer"),
+        withICList = getRobAStBaseOption("withICList"),
+        withPICList = getRobAStBaseOption("withPICList"),
+        na.rm = TRUE, initial.est.ArgList, ...)
 }
 \arguments{
   \item{x}{ sample }
@@ -20,6 +26,8 @@ roptest(x, L2Fam, eps, eps.lower, eps.upper, initial.est,
         lower bound for the amount of gross errors. See details below. }
   \item{eps.upper}{ positive real (\code{eps.lower} <= \code{eps.upper} <= 0.5): 
         upper bound for the amount of gross errors. See details below. }
+  \item{fsCor}{ positive real: factor used to correct the neighborhood radius;
+        see details. }
   \item{initial.est}{ initial estimate for unknown parameter. If missing 
         minimum distance estimator is computed. }
   \item{neighbor}{ object of class \code{"UncondNeighborhood"} }
@@ -36,6 +44,28 @@ roptest(x, L2Fam, eps, eps.lower, eps.upper, initial.est,
   \item{useLast}{ which parameter estimate (initial estimate or
     k-step estimate) shall be used to fill the slots \code{pIC},
     \code{asvar} and \code{asbias} of the return value. }
+  \item{OptOrIter}{character; which method to be used for determining Lagrange
+  multipliers \code{A} and \code{a}: if (partially) matched to \code{"optimize"},
+  \code{getLagrangeMultByOptim} is used; otherwise: by default, or if matched to
+  \code{"iterate"} or to \code{"doubleiterate"},
+  \code{getLagrangeMultByIter} is used. More specifically,
+  when using \code{getLagrangeMultByIter}, and if argument \code{risk} is of
+  class \code{"asGRisk"}, by default and if matched to \code{"iterate"}
+  we use only one (inner) iteration, if matched to \code{"doubleiterate"}
+  we use up to \code{Maxiter} (inner) iterations.}
+  \item{withUpdateInKer}{if there is a non-trivial trafo in the model with matrix \eqn{D}, shall
+  the parameter be updated on \eqn{{\rm ker}(D)}{ker(D)}?}
+  \item{IC.UpdateInKer}{if there is a non-trivial trafo in the model with matrix \eqn{D},
+  the IC to be used for this; if \code{NULL} the result of \code{getboundedIC(L2Fam,D)} is taken;
+  this IC will then be projected onto \eqn{{\rm ker}(D)}{ker(D)}.}
+  \item{withPICList}{logical: shall slot \code{pICList} of return value
+  be filled?}
+  \item{withICList}{logical: shall slot \code{ICList} of return value
+  be filled?}
+  \item{na.rm}{logical: if  \code{TRUE}, the estimator is evaluated at \code{complete.cases(x)}.}
+  \item{initial.est.ArgList}{a list of arguments to be given to argument \code{start} if the latter
+   is a function; this list by default already starts with two unnamed items,
+   the sample \code{x}, and the model \code{L2Fam}.}
   \item{\dots}{ further arguments }
 }
 \details{
@@ -64,6 +94,14 @@ roptest(x, L2Fam, eps, eps.lower, eps.upper, initial.est,
 
   If \code{eps} is missing, the radius-minimax estimator in sense of 
   Rieder et al. (2001, 2008), respectively Section 2.2 of Kohl (2005) is returned.
+
+  Finite-sample and higher order results suggest that the asymptotically
+  optimal procedure is to liberal. Using \code{fsCor} the radius can be
+  modified - as a rule enlarged - to obtain a more conservative estimate.
+  In case of normal location and scale there is function 
+  \code{\link[RobLox]{finiteSampleCorrection}} which returns a finite-sample 
+  corrected (enlarged) radius based on the results of large Monte-Carlo
+  studies.
 
   The default value of argument \code{useLast} is set by the
   global option \code{kStepUseLast} which by default is set to 
@@ -96,7 +134,8 @@ roptest(x, L2Fam, eps, eps.lower, eps.upper, initial.est,
   Humboldt University, Berlin; also available under
   \url{www.uni-bayreuth.de/departments/math/org/mathe7/RIEDER/pubs/RR.pdf}
 }
-\author{Matthias Kohl \email{Matthias.Kohl@stamats.de}}
+\author{Matthias Kohl \email{Matthias.Kohl@stamats.de},\cr
+        Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
 %\note{}
 \seealso{ \code{\link[RobLox]{roblox}}, 
           \code{\link[distrMod]{L2ParamFamily-class}}
@@ -122,6 +161,8 @@ confint(robest1, method = symmetricBias())
 ## neglecting bias
 confint(robest1)
 plot(pIC(robest1))
+qqplot(x, robest1, cex.pch=1.5, exp.cex2.pch = -.25,
+       exp.fadcol.pch = .55, jit.fac=.9)
 
 ## compute optimally robust estimator (unknown contamination)
 robest2 <- roptest(x, BinomFamily(size = 25), eps.lower = 0, eps.upper = 0.2, steps = 3)
@@ -162,7 +203,9 @@ robest <- roptest(x, PoisFamily(), eps.upper = 0.1, steps = 3)
 estimate(robest)
 confint(robest, symmetricBias())
 plot(pIC(robest))
-
+qqplot(x, robest, cex.pch=1.5, exp.cex2.pch = -.25,
+       exp.fadcol.pch = .55, jit.fac=.9)
+ 
 ## total variation neighborhoods (unknown deviation)
 robest1 <- roptest(x, PoisFamily(), eps.upper = 0.05, 
                   neighbor = TotalVarNeighborhood(), steps = 3)
@@ -193,6 +236,23 @@ confint(robest, symmetricBias())
 plot(pIC(robest))
 ## plot of relative and absolute information; cf. Kohl (2005)
 infoPlot(pIC(robest))
+
+qqplot(chem, robest, cex.pch=1.5, exp.cex2.pch = -.25,
+       exp.fadcol.pch = .55, withLab = TRUE, which.Order=1:4,
+       exp.cex2.lbl = .12,exp.fadcol.lbl = .45,
+       nosym.pCI = TRUE, adj.lbl=c(1.7,.2),
+       exact.pCI = FALSE, log ="xy")
+
+## finite-sample correction
+if(require(RobLox)){
+    n <- length(chem)
+    r <- 0.05*sqrt(n)
+    r.fi <- finiteSampleCorrection(n = n, r = r)
+    fsCor <- r.fi/r
+    robest <- roptest(chem, NormLocationScaleFamily(), eps = 0.05, 
+                      fsCor = fsCor, steps = 3)
+    estimate(robest)
+}
 
 ## compute optimally robust estimator (unknown contamination)
 ## takes some time -> use package RobLox!
