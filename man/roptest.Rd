@@ -123,10 +123,18 @@ roptest(x, L2Fam, eps, eps.lower, eps.upper, fsCor = 1, initial.est,
   Kohl, M. (2005) \emph{Numerical Contributions to the Asymptotic Theory of Robustness}. 
   Bayreuth: Dissertation.
 
+  Kohl, M. and Ruckdeschel, P. (2010): R package distrMod: 
+  Object-Oriented Implementation of Probability Models. 
+  J. Statist. Softw.  \bold{35}(10), 1--27
+  
+  Kohl, M. and Ruckdeschel, P., and Rieder, H. (2010):
+  Infinitesimally Robust Estimation in General Smoothly Parametrized Models.
+  \emph{Stat. Methods Appl.}, \bold{19}, 333--354. 
+
   Rieder, H. (1994) \emph{Robust Asymptotic Statistics}. New York: Springer.
 
   Rieder, H., Kohl, M. and Ruckdeschel, P. (2008) The Costs of not Knowing
-  the Radius. Statistical Methods and Applications \emph{17}(1) 13-40.
+  the Radius. Statistical Methods and Applications \bold{17}(1) 13-40.
 
   Rieder, H., Kohl, M. and Ruckdeschel, P. (2001) The Costs of not Knowing
   the Radius. Appeared as discussion paper Nr. 81. 
@@ -161,8 +169,9 @@ confint(robest1, method = symmetricBias())
 ## neglecting bias
 confint(robest1)
 plot(pIC(robest1))
-qqplot(x, robest1, cex.pch=1.5, exp.cex2.pch = -.25,
-       exp.fadcol.pch = .55, jit.fac=.9)
+qq1 <- qqplot(x, robest1, cex.pch=1.5, exp.cex2.pch = -.25,
+              exp.fadcol.pch = .55, jit.fac=.9)
+str(qq1)
 
 ## compute optimally robust estimator (unknown contamination)
 robest2 <- roptest(x, BinomFamily(size = 25), eps.lower = 0, eps.upper = 0.2, steps = 3)
@@ -203,8 +212,9 @@ robest <- roptest(x, PoisFamily(), eps.upper = 0.1, steps = 3)
 estimate(robest)
 confint(robest, symmetricBias())
 plot(pIC(robest))
-qqplot(x, robest, cex.pch=1.5, exp.cex2.pch = -.25,
-       exp.fadcol.pch = .55, jit.fac=.9)
+qq2 <- qqplot(x, robest, cex.pch=1.5, exp.cex2.pch = -.25,
+              exp.fadcol.pch = .55, jit.fac=.9)
+str(qq2)
  
 ## total variation neighborhoods (unknown deviation)
 robest1 <- roptest(x, PoisFamily(), eps.upper = 0.05, 
@@ -237,11 +247,12 @@ plot(pIC(robest))
 ## plot of relative and absolute information; cf. Kohl (2005)
 infoPlot(pIC(robest))
 
-qqplot(chem, robest, cex.pch=1.5, exp.cex2.pch = -.25,
-       exp.fadcol.pch = .55, withLab = TRUE, which.Order=1:4,
-       exp.cex2.lbl = .12,exp.fadcol.lbl = .45,
-       nosym.pCI = TRUE, adj.lbl=c(1.7,.2),
-       exact.pCI = FALSE, log ="xy")
+qq3 <- qqplot(chem, robest, cex.pch=1.5, exp.cex2.pch = -.25,
+              exp.fadcol.pch = .55, withLab = TRUE, which.Order=1:4,
+              exp.cex2.lbl = .12,exp.fadcol.lbl = .45,
+              nosym.pCI = TRUE, adj.lbl=c(1.7,.2),
+              exact.pCI = FALSE, log ="xy")
+str(qq3)
 
 ## finite-sample correction
 if(require(RobLox)){

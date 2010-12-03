@@ -1,5 +1,5 @@
 ###############################################################################
-## Example: Binomial Family
+## Example: Neg Binomial Family
 ###############################################################################
 
 require(ROptEst)
@@ -8,15 +8,15 @@ options("newDevice"=TRUE)
 #-------------------------------------------------------------------------------
 ## Preparations
 #-------------------------------------------------------------------------------
-## generates Binomial Family with
+## generates Neg.Binomial Family with
 ## m = 25 and probability of success theta = 0.25
-B <- BinomFamily(size = 25, prob = 0.25) 
-B       # show B 
+N <- NbinomFamily(size = 25, prob = 0.25) 
+N       # show N 
 
-#An object of class "BinomFamily"
-#### name:       Binomial family
+#An object of class "NbinomFamily"
+#### name:       Negative Binomial family
 #
-#### distribution:       Distribution Object of Class: Binom
+#### distribution:       Distribution Object of Class: Nbinom
 # size: 25
 # prob: 0.25
 #
@@ -30,82 +30,81 @@ B       # show B
 #prob    1
 #
 #### props:
-#[1] "The Binomial family is symmetric with respect to prob = 0.5;"
-#[2] "i.e., d(Binom(size, prob))(k)=d(Binom(size,1-prob))(size-k)"
-
-plot(B) # plot of Binom(size = 25, prob = 0.25) and L_2 derivative
-checkL2deriv(B)
-
-#precision of centering:  -3.103725e-15
-#precision of Fisher information:
-#              prob
-#prob -2.842171e-14
-#$maximum.deviation
-#[1] 2.842171e-14
+#[1] ""
+#
+#plot(N) # plot of Nbinom(size = 25, prob = 0.25) and L_2 derivative
+#checkL2deriv(N)
+#
+##precision of centering:  -3.103725e-15
+##precision of Fisher information:
+##              prob
+##prob -2.842171e-14
+##$maximum.deviation
+##[1] 2.842171e-14
 
 #-------------------------------------------------------------------------------
 ## classical optimal IC
 #-------------------------------------------------------------------------------
-IC0 <- optIC(model = B, risk = asCov())
+IC0 <- optIC(model = N, risk = asCov())
 IC0       # show IC
 
-#An object of class “IC”
-#### name:        Classical optimal influence curve for Binomial family
-#### L2-differentiable parametric family:         Binomial family
+#An object of class “IC” 
+#### name:        Classical optimal influence curve for Negative Binomial family 
+#### L2-differentiable parametric family:         Negative Binomial family 
 #
-#### 'Curve':    An object of class “EuclRandVarList”
-#Domain: Real Space with dimension 1
+#### 'Curve':    An object of class “EuclRandVarList” 
+#Domain: Real Space with dimension 1 
 #[[1]]
-#length of Map:   1
-#Range:  Real Space with dimension 1
+#length of Map:   1 
+#Range:  Real Space with dimension 1 
 #
 #### Infos:
-#     method  message
+#     method  message                                  
 #[1,] "optIC" "optimal IC in sense of Cramer-Rao bound"
 
 plot(IC0) # plot IC
 checkIC(IC0)
 
-#precision of centering:  -2.403827e-17
+#precision of centering:  7.796853e-15 
 #precision of Fisher consistency:
 #              prob
-#prob -1.110223e-16
-#maximum deviation
-#     1.110223e-16
+#prob -2.166600e-12
+#maximum deviation 
+#     2.166600e-12 
 
 Risks(IC0)
 
 #$asCov
-#       prob
-#prob 0.0075
+#         prob
+#prob 0.001875
 #
 #$trAsCov
-#[1] 0.0075
+#[1] 0.001875
 
 #-------------------------------------------------------------------------------
 ## lower case radius
 #-------------------------------------------------------------------------------
-lowerCaseRadius(L2Fam = B, neighbor = ContNeighborhood(), risk = asMSE())
+lowerCaseRadius(L2Fam = N, neighbor = ContNeighborhood(), risk = asMSE())
 
 #lower case radius
-#         1.197809
+#         4.153322
 
-lowerCaseRadius(L2Fam = B, neighbor = TotalVarNeighborhood(), risk = asMSE())
+lowerCaseRadius(L2Fam = N, neighbor = TotalVarNeighborhood(), risk = asMSE())
 
 #lower case radius
-#         1.130615
+#         1.840705 
          
 #-------------------------------------------------------------------------------
 ## L_2 family + infinitesimal neighborhood
 #-------------------------------------------------------------------------------
-RobB1 <- InfRobModel(center = B, neighbor = ContNeighborhood(radius = 0.5))
-RobB1     # show RobB1
+RobN1 <- InfRobModel(center = N, neighbor = ContNeighborhood(radius = 0.5))
+RobN1     # show RobN1
 
-#An object of class “InfRobModel”
-####### center:  An object of class "BinomFamily"
-#### name:       Binomial family
+#An object of class “InfRobModel” 
+####### center:  An object of class "NbinomFamily"
+#### name:       Negative Binomial family
 #
-#### distribution:       Distribution Object of Class: Binom
+#### distribution:       Distribution Object of Class: Nbinom
 # size: 25
 # prob: 0.25
 #
@@ -119,20 +118,19 @@ RobB1     # show RobB1
 #prob    1
 #
 #### props:
-#[1] "The Binomial family is symmetric with respect to prob = 0.5;"
-#[2] "i.e., d(Binom(size, prob))(k)=d(Binom(size,1-prob))(size-k)"
+#[1] ""
 #
-####### neighborhood:    An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.5
+####### neighborhood:    An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5 
 
-(RobB2 <- InfRobModel(center = B, neighbor = TotalVarNeighborhood(radius = 0.5)))
+(RobN2 <- InfRobModel(center = N, neighbor = TotalVarNeighborhood(radius = 0.5)))
 
-#An object of class “InfRobModel”
-####### center:  An object of class "BinomFamily"
-#### name:       Binomial family
+#An object of class “InfRobModel” 
+####### center:  An object of class "NbinomFamily"
+#### name:       Negative Binomial family
 #
-#### distribution:       Distribution Object of Class: Binom
+#### distribution:       Distribution Object of Class: Nbinom
 # size: 25
 # prob: 0.25
 #
@@ -146,35 +144,33 @@ RobB1     # show RobB1
 #prob    1
 #
 #### props:
-#[1] "The Binomial family is symmetric with respect to prob = 0.5;"
-#[2] "i.e., d(Binom(size, prob))(k)=d(Binom(size,1-prob))(size-k)"
+#[1] ""
 #
-####### neighborhood:    An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.5
+####### neighborhood:    An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.5 
 
 #-------------------------------------------------------------------------------
 ## OBRE solution
 #-------------------------------------------------------------------------------
 
-system.time(ICA <-  optIC(model=RobB1, risk=asAnscombe(),
+system.time(ICA <-  optIC(model=RobN1, risk=asAnscombe(),
             verbose=TRUE,lower=NULL,upper=10))
-
 
 #-------------------------------------------------------------------------------
 ## MSE solution
 #-------------------------------------------------------------------------------
-system.time(IC1 <- optIC(model=RobB1, risk=asMSE()))
+system.time(IC1 <- optIC(model=RobN1, risk=asMSE()))
 
 #   user  system elapsed
-#   3.62    0.00    3.62
+#  10.53    0.02   11.21 
 
 IC1
 
-#An object of class “ContIC”
-#### name:        IC of contamination type
+#An object of class “ContIC” 
+#### name:        IC of contamination type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -184,52 +180,52 @@ IC1
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clip:       [1] 0.1213661
-#### cent:       [1] -0.003061948
+#### clip:       [1] 0.06143505
+#### cent:       [1] 0.003717104
 #### stand:
 #           prob
-#prob 0.01222674
+#prob 0.00310076
 #
 #### Infos:
-#     method  message
+#     method  message                          
 #[1,] "optIC" "optimally robust IC for ‘asMSE’"
 
 checkIC(IC1)
 
-#precision of centering:  -3.17283e-17
+#precision of centering:  4.297326e-14 
 #precision of Fisher consistency:
-#              prob
-#prob -3.330669e-16
-#maximum deviation
-#     3.330669e-16
+#             prob
+#prob 2.555733e-13
+#maximum deviation 
+#     2.555733e-13 
 
 Risks(IC1)
 
 #$asCov
 #            prob
-#prob 0.008544305
+#prob 0.002157193
 #
 #$asBias
 #$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -245,17 +241,17 @@ Risks(IC1)
 #$trAsCov
 #$trAsCov$value
 #            prob
-#prob 0.008544305
+#prob 0.002157193
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -266,66 +262,63 @@ Risks(IC1)
 #$asMSE
 #$asMSE$value
 #           prob
-#prob 0.01222674
+#prob 0.00310076
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.5
+#An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5 
+
 
 getRiskIC(IC1, asBias(), ContNeighborhood()) # standardized bias
 
 #$asBias
 #$asBias$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asBias$neighborhood
 #[1] "(uncond.) convex contamination neighborhood"
 #
 #$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
 
 
 getRiskIC(IC1, asMSE(), ContNeighborhood(radius = 0.5))
 
 #$asMSE
 #$asMSE$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asMSE$neighborhood
 #[1] "(uncond.) convex contamination neighborhood with radius 0.5"
 #
 #$asMSE$radius
 #[1] 0.5
+#
+#$asMSE$value
+#[1] 0.00310076
 
 
 (Cov1 <- getRiskIC(IC1, asCov()))
 
 #$asCov
 #$asCov$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asCov$value
-#$asCov$value[[1]]
-#[1] 0.008544305
-#
-#$asCov$value$asCov
-#$asCov$value$asCov$distribution
-#[1] "Binom(25, 0.25)"
-#
-#$asCov$value$asCov$value
 #            prob
-#prob 0.008544305
+#prob 0.002157193
+
 
 
 (mse1 <- getRiskIC(IC1, asMSE(), TotalVarNeighborhood(radius = 0.5)))
 
 #$asMSE
 #$asMSE$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asMSE$neighborhood
 #[1] "(uncond.) total variation neighborhood with radius 0.5"
@@ -334,19 +327,20 @@ getRiskIC(IC1, asMSE(), ContNeighborhood(radius = 0.5))
 #[1] 0.5
 #
 #$asMSE$value
-#[1] 0.01222674
+#[1] 0.00310076
 
 (bias1 <- getRiskIC(IC1, asBias(), TotalVarNeighborhood()))
-#
+
 #$asBias
 #$asBias$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asBias$neighborhood
 #[1] "(uncond.) total variation neighborhood"
 #
 #$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
+
 
 ## only suboptimal -> ToDo-List
 addRisk(IC1) <- list(Cov1, mse1, bias1)
@@ -354,53 +348,37 @@ Risks(IC1)
 
 #$asCov
 #$asCov[[1]]
-#[1] 0.008544305
+#[1] 0.002157193
 #
 #$asCov$asCov
 #$asCov$asCov$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asCov$asCov$value
 #            prob
-#prob 0.008544305
+#prob 0.002157193
 #
-#
-#$asCov$asCov
-#$asCov$asCov$distribution
-#[1] "Binom(25, 0.25)"
-#
-#$asCov$asCov$value
-#$asCov$asCov$value[[1]]
-#[1] 0.008544305
-#
-#$asCov$asCov$value$asCov
-#$asCov$asCov$value$asCov$distribution
-#[1] "Binom(25, 0.25)"
-#
-#$asCov$asCov$value$asCov$value
-#            prob
-#prob 0.008544305
 #
 #
 #$asBias
 #$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -414,41 +392,30 @@ Risks(IC1)
 #
 #$asBias$asBias
 #$asBias$asBias$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asBias$asBias$neighborhood
 #[1] "(uncond.) total variation neighborhood"
 #
 #$asBias$asBias$value
-#[1] 0.1213661
-#
-#
-#$asBias$asBias
-#$asBias$asBias$distribution
-#[1] "Binom(25, 0.25)"
-#
-#$asBias$asBias$neighborhood
-#[1] "(uncond.) total variation neighborhood"
-#
-#$asBias$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
 #
 #
 #
 #$trAsCov
 #$trAsCov$value
 #            prob
-#prob 0.008544305
+#prob 0.002157193
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -459,19 +426,19 @@ Risks(IC1)
 #$asMSE
 #$asMSE$value
 #           prob
-#prob 0.01222674
+#prob 0.00310076
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.5
+#An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5 
 #
 #$asMSE$asMSE
 #$asMSE$asMSE$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asMSE$asMSE$neighborhood
 #[1] "(uncond.) total variation neighborhood with radius 0.5"
@@ -480,35 +447,22 @@ Risks(IC1)
 #[1] 0.5
 #
 #$asMSE$asMSE$value
-#[1] 0.01222674
-#
-#
-#$asMSE$asMSE
-#$asMSE$asMSE$distribution
-#[1] "Binom(25, 0.25)"
-#
-#$asMSE$asMSE$neighborhood
-#[1] "(uncond.) total variation neighborhood with radius 0.5"
-#
-#$asMSE$asMSE$radius
-#[1] 0.5
-#
-#$asMSE$asMSE$value
-#[1] 0.01222674
+#[1] 0.00310076
+
 
 plot(IC1)
 
-system.time(IC2 <- optIC(model=RobB2, risk=asMSE()))
+system.time(IC2 <- optIC(model=RobN2, risk=asMSE()))
 
 #   user  system elapsed
-#   9.46    0.02    9.47
+# 75.57    0.22   81.59
 
 IC2
 
-#An object of class “TotalVarIC”
-#### name:        IC of total variation type
+#An object of class “TotalVarIC” 
+#### name:        IC of total variation type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -518,52 +472,52 @@ IC2
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clipLo:     [1] -0.1081481
-#### clipUp:     [1] 0.1158377
+#### clipLo:     [1] -0.06032159
+#### clipUp:     [1] 0.052032
 #### stand:
-#           prob
-#prob 0.02208611
+#            prob
+#prob 0.005585238
 #
 #### Infos:
-#     method  message
+#     method  message                          
 #[1,] "optIC" "optimally robust IC for ‘asMSE’"
 
 checkIC(IC2)
 
-#precision of centering:  -1.745301e-13
+#precision of centering:  9.638494e-16 
 #precision of Fisher consistency:
-#              prob
-#prob -1.110223e-16
-#maximum deviation
-#     1.745301e-13
+#             prob
+#prob 2.164935e-13
+#maximum deviation 
+#     2.164935e-13 
 
 Risks(IC2)
 
 #$asCov
-#           prob
-#prob 0.03342380
+#            prob
+#prob 0.008255488
 #
 #$asBias
 #$asBias$value
-#[1] 0.2239858
+#[1] 0.1123536
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -578,18 +532,18 @@ Risks(IC2)
 #
 #$trAsCov
 #$trAsCov$value
-#           prob
-#prob 0.03342380
+#            prob
+#prob 0.008255488
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -600,22 +554,22 @@ Risks(IC2)
 #$asMSE
 #$asMSE$value
 #           prob
-#prob 0.04596621
+#prob 0.01141132
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.5
+#An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.5 
 #
 
 getRiskIC(IC2, asMSE(), TotalVarNeighborhood(radius = 0.5))
 
 #$asMSE
 #$asMSE$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asMSE$neighborhood
 #[1] "(uncond.) total variation neighborhood with radius 0.5"
@@ -624,31 +578,31 @@ getRiskIC(IC2, asMSE(), TotalVarNeighborhood(radius = 0.5))
 #[1] 0.5
 #
 #$asMSE$value
-#[1] 0.04596621
+#[1] 0.01141132
 
 getRiskIC(IC2, asBias(), TotalVarNeighborhood())
 
 #$asBias
 #$asBias$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asBias$neighborhood
 #[1] "(uncond.) total variation neighborhood"
 #
 #$asBias$value
-#[1] 0.2239858
+#[1] 0.1123536
 
 getRiskIC(IC2, asBias(), ContNeighborhood())
 
 #$asBias
 #$asBias$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asBias$neighborhood
 #[1] "(uncond.) convex contamination neighborhood"
 #
 #$asBias$value
-#[1] 0.2239858
+#[1] 0.1123536
 
 Cov2 <- getRiskIC(IC2, asCov())
 addRisk(IC2) <- Cov2
@@ -656,35 +610,37 @@ Risks(IC2)
 
 #$asCov
 #$asCov[[1]]
-#[1] 0.03342380
+#[1] 0.008255488
 #
 #$asCov$asCov
 #$asCov$asCov$distribution
-#[1] "Binom(25, 0.25)"
+#[1] "Nbinom(25, 0.25)"
 #
 #$asCov$asCov$value
-#           prob
-#prob 0.03342380
+#            prob
+#prob 0.008255488
+#
+#
 #
 #$asBias
 #$asBias$value
-#[1] 0.2239858
+#[1] 0.1123536
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -699,18 +655,18 @@ Risks(IC2)
 #
 #$trAsCov
 #$trAsCov$value
-#           prob
-#prob 0.03342380
+#            prob
+#prob 0.008255488
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -721,27 +677,29 @@ Risks(IC2)
 #$asMSE
 #$asMSE$value
 #           prob
-#prob 0.04596621
+#prob 0.01141132
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.5
+#An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.5 
+
 
 plot(IC2)
 
 #-------------------------------------------------------------------------------
 ## lower case solutions
 #-------------------------------------------------------------------------------
-(IC3 <- optIC(model=RobB1, risk=asBias()))
+(IC3 <- optIC(model=RobN1, risk=asBias()))
 
-#An object of class “ContIC”
-#### name:        IC of contamination type
+
+#An object of class “ContIC” 
+#### name:        IC of contamination type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -751,49 +709,50 @@ plot(IC2)
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clip:       [1] 0.1098910
-#### cent:       [1] -1.333333
+#### clip:       [1] 0.05458835
+#### cent:       [1] 1.333333
 #### stand:
 #     [,1]
 #[1,]    1
-#### lowerCase:  [1] -0.3316026
+#### lowerCase:  [1] -0.3268154
 #
 #### Infos:
-#     method  message
+#     method  message                                        
 #[1,] "optIC" "minimum asymptotic bias (lower case) solution"
+
 
 checkIC(IC3)
 
-#precision of centering:  -1.714470e-17
+#precision of centering:  7.555495e-16 
 #precision of Fisher consistency:
 #             prob
-#prob 2.220446e-16
-#maximum deviation
-#     2.220446e-16
+#prob 8.881784e-16
+#maximum deviation 
+#     8.881784e-16 
 
 Risks(IC3)
 
 #$asBias
 #$asBias$value
-#[1] 0.1098910
+#[1] 0.05458835
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -807,21 +766,21 @@ Risks(IC3)
 #
 #
 #$asCov
-#[1] 0.01011106
+#[1] 0.002918187
 #
 #$trAsCov
 #$trAsCov$value
-#[1] 0.01011106
+#[1] 0.002918187
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -831,75 +790,76 @@ Risks(IC3)
 #
 #$asMSE
 #$asMSE$value
-#[1] 0.01086581
+#[1] 0.00310443
 #
 #$asMSE$r
 #[1] 0.25
 #
 #$asMSE$at
-#An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.5
+#An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5 
+
 
 plot(IC3)
 
-(IC4 <- optIC(model=RobB2, risk=asBias()))
+(IC4 <- optIC(model=RobN2, risk=asBias()))
 
-#An object of class “TotalVarIC”
-#### name:        IC of total variation type
+#An object of class “TotalVarIC” 
+#### name:        IC of total variation type 
 #
-#### L2-differentiable parametric family:         Binomial family
-### param:      An object of class "ParamFamParameter"
-##name:   probability of success
+#### L2-differentiable parametric family:         Negative Binomial family 
+#### param:      An object of class "ParamFamParameter"
+#name:   probability of success
 #prob:   0.25
-##fixed part of param.:
+#fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clipLo:     [1] -0.094766
-#### clipUp:     [1] 0.1211501
+#### clipLo:     [1] -0.0574604
+#### clipUp:     [1] 0.05147243
 #### stand:
 #     [,1]
 #[1,]    1
 #
 #### Infos:
-#     method  message
+#     method  message                                        
 #[1,] "optIC" "minimum asymptotic bias (lower case) solution"
 
 checkIC(IC4)
 
-#precision of centering:  -1.076010e-17
-#precision of Fisher consistency:
-#              prob
-#prob -3.330669e-16
-#maximum deviation
-#     3.330669e-16
+#precision of centering:  1.111799e-15                      
+#precision of Fisher consistency:                     
+#            prob                     
+#prob 2.14051e-13                     
+#maximum deviation                      
+#      2.14051e-13                      
 
 Risks(IC4)
 
 #$asBias
 #$asBias$value
-#[1] 0.2159161
+#[1] 0.1089328
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -913,21 +873,21 @@ Risks(IC4)
 #
 #
 #$asCov
-#[1] 0.01148091
+#[1] 0.002889749
 #
 #$trAsCov
 #$trAsCov$value
-#[1] 0.01148091
+#[1] 0.002889749
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -937,15 +897,16 @@ Risks(IC4)
 #
 #$asMSE
 #$asMSE$value
-#[1] 0.01439465
+#[1] 0.003631397
 #
 #$asMSE$r
 #[1] 0.25
 #
 #$asMSE$at
-#An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.5
+#An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.5 
+
 
 plot(IC4)
 
@@ -953,13 +914,13 @@ plot(IC4)
 #-------------------------------------------------------------------------------
 ## Hampel solution
 #-------------------------------------------------------------------------------
-(IC5 <- optIC(model=RobB1, risk=asHampel(bound=clip(IC1))))
+(IC5 <- optIC(model=RobN1, risk=asHampel(bound=clip(IC1))))
 
-#minimal bound:   0.1098910
-#An object of class “ContIC”
-#### name:        IC of contamination type
+#minimal bound:   0.05458835 
+#An object of class “ContIC” 
+#### name:        IC of contamination type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -969,52 +930,53 @@ plot(IC4)
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clip:       [1] 0.1213661
-#### cent:       [1] -0.003061961
+#### clip:       [1] 0.06143505
+#### cent:       [1] 0.003717089
 #### stand:
-#           prob
-#prob 0.01222672
+#            prob
+#prob 0.003100752
 #
 #### Infos:
-#     method  message
-#[1,] "optIC" "optimally robust IC for 'asHampel' with bound = 0.121"
+#     method  message                                                
+#[1,] "optIC" "optimally robust IC for 'asHampel' with bound = 0.061"
+
 
 checkIC(IC5)
 
-#precision of centering:  -3.524202e-17
+#precision of centering:  4.289037e-14 
 #precision of Fisher consistency:
-#             prob
-#prob -3.56339e-07
-#maximum deviation
-#      3.56339e-07
+#              prob
+#prob -5.088488e-07
+#maximum deviation 
+#     5.088488e-07 
 
 Risks(IC5)
 
 #$asCov
 #            prob
-#prob 0.008544296
+#prob 0.002157190
 #
 #$asBias
 #$asBias$value
-#[1] 0.1213661
+#[1] 0.06143505
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1030,17 +992,17 @@ Risks(IC5)
 #$trAsCov
 #$trAsCov$value
 #            prob
-#prob 0.008544296
+#prob 0.002157190
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1050,27 +1012,30 @@ Risks(IC5)
 #
 #$asMSE
 #$asMSE$value
-#           prob
-#prob 0.01222673
+#            prob
+#prob 0.003100757
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.5
+#An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5 
+
 
 
 plot(IC5)
 
-(IC6 <- optIC(model=RobB2, risk=asHampel(bound=Risks(IC2)$asBias$value), maxiter = 200))
+(IC6 <- optIC(model=RobN2, risk=asHampel(bound=Risks(IC2)$asBias$value), maxiter = 200))
 
-#minimal bound:   0.2159161
-#An object of class “TotalVarIC”
-#### name:        IC of total variation type
+#minimal bound:   0.1089328 
+#maximum iterations reached!
+# achieved precision:     5.583403e-07 
+#An object of class “TotalVarIC” 
+#### name:        IC of total variation type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -1080,52 +1045,54 @@ plot(IC5)
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5
+#### neighborhood radius:         0.5 
 #
-#### clipLo:     [1] -0.1081481
-#### clipUp:     [1] 0.1158378
+#### clipLo:     [1] -0.06032159
+#### clipUp:     [1] 0.052032
 #### stand:
-#           prob
-#prob 0.02208608
+#            prob
+#prob 0.005585234
 #
 #### Infos:
-#     method  message
-#[1,] "optIC" "optimally robust IC for 'asHampel' with bound = 0.224"
+#     method  message                                                
+#[1,] "optIC" "optimally robust IC for 'asHampel' with bound = 0.112"
+
 
 checkIC(IC6)
 
-#precision of centering:  -1.745225e-13
+#precision of centering:  9.55774e-16 
 #precision of Fisher consistency:
 #              prob
-#prob -1.166564e-07
-#maximum deviation
-#     1.166564e-07
+#prob -4.638466e-08
+#maximum deviation 
+#     4.638466e-08 
+
 
 Risks(IC6)
 
 #$asCov
-#           prob
-#prob 0.03342372
+#            prob
+#prob 0.008255479
 #
 #$asBias
 #$asBias$value
-#[1] 0.2239858
+#[1] 0.1123536
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1140,18 +1107,18 @@ Risks(IC6)
 #
 #$trAsCov
 #$trAsCov$value
-#           prob
-#prob 0.03342372
+#            prob
+#prob 0.008255479
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1162,15 +1129,17 @@ Risks(IC6)
 #$asMSE
 #$asMSE$value
 #           prob
-#prob 0.04596613
+#prob 0.01141131
 #
 #$asMSE$r
 #[1] 0.5
 #
 #$asMSE$at
-#An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.5
+#An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.5 
+
+
 
 plot(IC6)
 
@@ -1178,17 +1147,17 @@ plot(IC6)
 #-------------------------------------------------------------------------------
 ## radius minimax IC
 #-------------------------------------------------------------------------------
-system.time(IC7 <- radiusMinimaxIC(L2Fam=B, neighbor=ContNeighborhood(),
-                        risk=asMSE(), loRad=0, upRad=1))
+system.time(IC7 <- radiusMinimaxIC(L2Fam=N, neighbor=ContNeighborhood(),
+                        risk=asMSE(), loRad=0.01, upRad=3.9))
 #   user  system elapsed
-#  39.39    0.02   39.45
+#  33.26    0.02   33.64 
 
 IC7
 
-#An object of class “ContIC”
-#### name:        IC of contamination type
+#An object of class “ContIC” 
+#### name:        IC of contamination type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -1198,54 +1167,54 @@ IC7
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.3913008
+#### neighborhood radius:         0.5814856 
 #
-#### clip:       [1] 0.1269559
-#### cent:       [1] -0.004305063
+#### clip:       [1] 0.05991006
+#### cent:       [1] 0.004363098
 #### stand:
-#           prob
-#prob 0.01074017
+#            prob
+#prob 0.003424638
 #
 #### Infos:
-#     method            message
-#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, 1]"
-#[2,] "radiusMinimaxIC" "least favorable radius: 0.391"
-#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.103"
+#     method            message                                            
+#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0.01, 3.9]"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.581"                    
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.177"    
 
 checkIC(IC7)
 
-#precision of centering:  -3.056847e-17
+#precision of centering:  5.901277e-12 
 #precision of Fisher consistency:
 #              prob
-#prob -3.330669e-16
-#maximum deviation
-#     3.330669e-16
+#prob -1.295138e-09
+#maximum deviation 
+#     1.295138e-09 
 
 Risks(IC7)
 
 #$asCov
 #            prob
-#prob 0.008272273
+#prob 0.002211033
 #
 #$asBias
 #$asBias$value
-#[1] 0.1269559
+#[1] 0.05991006
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1261,17 +1230,17 @@ Risks(IC7)
 #$trAsCov
 #$trAsCov$value
 #            prob
-#prob 0.008272273
+#prob 0.002211033
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1281,30 +1250,31 @@ Risks(IC7)
 #
 #$asMSE
 #$asMSE$value
-#           prob
-#prob 0.01074017
+#            prob
+#prob 0.003424638
 #
 #$asMSE$r
-#[1] 0.3913008
+#[1] 0.5814856
 #
 #$asMSE$at
-#An object of class “ContNeighborhood”
-#type:    (uncond.) convex contamination neighborhood
-#radius:  0.3913008
+#An object of class “ContNeighborhood” 
+#type:    (uncond.) convex contamination neighborhood 
+#radius:  0.5814856 
+
 
 plot(IC7)
 
-system.time(IC8 <- radiusMinimaxIC(L2Fam=B, neighbor=TotalVarNeighborhood(),
-                        risk=asMSE(), loRad=0, upRad=1))
+system.time(IC8 <- radiusMinimaxIC(L2Fam=N, neighbor=TotalVarNeighborhood(),
+                        risk=asMSE(), loRad=0.01, upRad=1.8))
 #   user  system elapsed
-# 163.20    0.12  168.21
+# 565.58    0.21  586.05
 
 IC8
 
-#An object of class “TotalVarIC”
-#### name:        IC of total variation type
+#An object of class “TotalVarIC” 
+#### name:        IC of total variation type 
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family 
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
 #prob:   0.25
@@ -1314,54 +1284,56 @@ IC8
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.2661058
+#### neighborhood radius:         0.2944932 
 #
-#### clipLo:     [1] -0.1157700
-#### clipUp:     [1] 0.1248992
+#### clipLo:     [1] -0.06497353
+#### clipUp:     [1] 0.05431373
 #### stand:
-#           prob
-#prob 0.01269835
+#            prob
+#prob 0.003432502
 #
 #### Infos:
-#     method            message
-#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, 1]"
-#[2,] "radiusMinimaxIC" "least favorable radius: 0.266"
-#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.146"
+#     method            message                                            
+#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0.01, 1.8]"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.294"                    
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.168"   
+
 
 checkIC(IC8)
 
-#precision of centering:  6.021289e-10
+#precision of centering:  6.400051e-12 
 #precision of Fisher consistency:
 #              prob
-#prob -2.220446e-16
-#maximum deviation
-#     6.021289e-10
+#prob -1.404645e-09
+#maximum deviation 
+#     1.404645e-09 
+
 
 Risks(IC8)
 
 #$asCov
-#           prob
-#prob 0.01546324
+#            prob
+#prob 0.003987582
 #
 #$asBias
 #$asBias$value
-#[1] 0.2406692
+#[1] 0.1192873
 #
 #$asBias$biastype
-#An object of class “symmetricBias”
+#An object of class "symmetricBias"
 #Slot "name":
 #[1] "symmetric Bias"
 #
 #
 #$asBias$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1376,18 +1348,18 @@ Risks(IC8)
 #
 #$trAsCov
 #$trAsCov$value
-#           prob
-#prob 0.01546324
+#            prob
+#prob 0.003987582
 #
 #$trAsCov$normtype
-#An object of class “NormType”
+#An object of class "NormType"
 #Slot "name":
 #[1] "EuclideanNorm"
 #
 #Slot "fct":
-#function (x)
+#function (x) 
 #{
-#    if (is.vector(x))
+#    if (is.vector(x)) 
 #        return(abs(x))
 #    else return(sqrt(colSums(x^2)))
 #}
@@ -1397,16 +1369,16 @@ Risks(IC8)
 #
 #$asMSE
 #$asMSE$value
-#          prob
-#prob 0.0195648
+#            prob
+#prob 0.005221649
 #
 #$asMSE$r
-#[1] 0.2661058
+#[1] 0.2944932
 #
 #$asMSE$at
-#An object of class “TotalVarNeighborhood”
-#type:    (uncond.) total variation neighborhood
-#radius:  0.2661058
+#An object of class “TotalVarNeighborhood” 
+#type:    (uncond.) total variation neighborhood 
+#radius:  0.2944932 
 
 plot(IC8)
 
@@ -1415,113 +1387,142 @@ plot(IC8)
 ## least favorable radius
 #-------------------------------------------------------------------------------
 ## (may take quite some time!)
-system.time(r.rho1 <- leastFavorableRadius(L2Fam=B, neighbor=ContNeighborhood(),
+system.time(r.rho1 <- leastFavorableRadius(L2Fam=N, neighbor=ContNeighborhood(),
                     risk=asMSE(), rho=0.5))
 
-#current radius:  0.3820278      inefficiency:    1.038184
-#current radius:  0.6180722      inefficiency:    1.044504
-#current radius:  0.7639556      inefficiency:    1.042432
-#current radius:  0.6248193      inefficiency:    1.044545
-#current radius:  0.6423138      inefficiency:    1.044575
-#current radius:  0.6887768      inefficiency:    1.044172
-#current radius:  0.6381993      inefficiency:    1.044581
-#current radius:  0.6371031      inefficiency:    1.044575
-#current radius:  0.6397095      inefficiency:    1.044575
-#current radius:  0.6387762      inefficiency:    1.044584
-#current radius:  0.6387355      inefficiency:    1.044584
-#current radius:  0.6391327      inefficiency:    1.044573
-#current radius:  0.6389123      inefficiency:    1.044572
-#current radius:  0.6388282      inefficiency:    1.044571
-#current radius:  0.6387762      inefficiency:    1.044584
-#   user  system elapsed
-# 437.47    0.09  438.58
+#current radius:  0.3820278      inefficiency:    1.040429 
+#current radius:  0.6180722      inefficiency:    1.044464 
+#current radius:  0.7639556      inefficiency:    1.041844 
+#current radius:  0.5931816      inefficiency:    1.044631 
+#current radius:  0.5546088      inefficiency:    1.044691 
+#current radius:  0.5644109      inefficiency:    1.044698 
+#current radius:  0.5640279      inefficiency:    1.0447 
+#current radius:  0.5599945      inefficiency:    1.044697 
+#current radius:  0.5624873      inefficiency:    1.044701 
+#current radius:  0.5631909      inefficiency:    1.044701 
+#current radius:  0.5627771      inefficiency:    1.044701 
+#current radius:  0.5625595      inefficiency:    1.044701 
+#current radius:  0.5626002      inefficiency:    1.044701 
+#current radius:  0.5625595      inefficiency:    1.044701 
+#   user  system elapsed 
+# 361.25    0.12  369.05 
 
+## same as for binomial????
+ 
 r.rho1
 
 #$rho
 #[1] 0.5
 #
 #$leastFavorableRadius
-#[1] 0.6387762
+#[1] 0.5625595
 #
 #$`asMSE-inefficiency`
-#[1] 1.044584
+#[1] 1.044701
 
-system.time(r.rho2 <- leastFavorableRadius(L2Fam=B, neighbor=TotalVarNeighborhood(),
+system.time(r.rho2 <- leastFavorableRadius(L2Fam=N, neighbor=TotalVarNeighborhood(),
                     risk=asMSE(), rho=0.5))
 
-#current radius:  0.3820278      inefficiency:    1.040750
-#current radius:  0.6180722      inefficiency:    1.028895
-#current radius:  0.2361444      inefficiency:    1.043035
-#current radius:  0.2225705      inefficiency:    1.042438
-#current radius:  0.2881511      inefficiency:    1.043182
-#current radius:  0.3240088      inefficiency:    1.043234
-#current radius:  0.3524144      inefficiency:    1.042468
-#current radius:  0.3103124      inefficiency:    1.043323
-#current radius:  0.3081042      inefficiency:    1.043320
-#current radius:  0.3106103      inefficiency:    1.043323
-#current radius:  0.3105373      inefficiency:    1.043323
-#current radius:  0.3104966      inefficiency:    1.043323
-#current radius:  0.3105373      inefficiency:    1.043323
-#   user  system elapsed
-#2211.92    1.13 2235.70
-
+#current radius:  0.3820278      inefficiency:    1.041727 
+#current radius:  0.6180722      inefficiency:    1.027733 
+#current radius:  0.2361444      inefficiency:    1.043317 
+#current radius:  0.2660735      inefficiency:    1.044275 
+#current radius:  0.2943633      inefficiency:    1.044409 
+#current radius:  0.2852759      inefficiency:    1.04443 
+#current radius:  0.2866889      inefficiency:    1.044456 
+#current radius:  0.2893884      inefficiency:    1.044426 
+#current radius:  0.2872589      inefficiency:    1.044427 
+#current radius:  0.2862418      inefficiency:    1.044439 
+#current radius:  0.2869066      inefficiency:    1.044442 
+#current radius:  0.2865879      inefficiency:    1.044429 
+#current radius:  0.2867296      inefficiency:    1.044453 
+#current radius:  0.2866482      inefficiency:    1.044425 
+#current radius:  0.2866889      inefficiency:    1.044456 
+#    user  system elapsed 
+# 4891.07    1.90 5063.44 
+ 
 r.rho2
 
 #$rho
 #[1] 0.5
 #
 #$leastFavorableRadius
-#[1] 0.3105373
+#[1] 0.2866889
 #
 #$`asMSE-inefficiency`
-#[1] 1.043323
+#[1] 1.044456
 
 
 ###############################################################################
 ## k-step (k >= 1) estimation
-###############################################################################
+################################################################################
 
 ## one-step estimation
 ## 1. generate a contaminated sample
 ind <- rbinom(100, size=1, prob=0.05)
-x <- rbinom(100, size=25, prob=(1-ind)*0.25 + ind*0.75)
+x <- rnbinom(100, size=25, prob=(1-ind)*0.25 + ind*0.01)
+
+### MLE:
+
+(estML <- MLEstimator(x=x, NbinomFamily(size=25)))
+
+#Evaluations of Maximum likelihood estimate:
+#-------------------------------------------
+#An object of class “Estimate”
+#generated by call
+#  MLEstimator(x = x, ParamFamily = NbinomFamily(size = 25))
+#samplesize:   100
+#estimate:
+#      prob
+#  0.135624871
+# (0.002521857)
+#fixed part of the parameter:
+#size
+#  25
+#asymptotic (co)variance (multiplied with samplesize):
+#[1] 0.0006359763
+#Criterion:
+#negative log-likelihood
+#               1868.396
 
 ## 2. Kolmogorov(-Smirnov) minimum distance estimator
-(est0 <- MDEstimator(x=x, BinomFamily(size=25)))
+
+(est0 <- MDEstimator(x=x, NbinomFamily(size=25)))
 
 #Evaluations of Minimum Kolmogorov distance estimate:
 #----------------------------------------------------
 #An object of class “Estimate”
 #generated by call
-#  MDEstimator(x = x, ParamFamily = BinomFamily(size = 25))
+#  MDEstimator(x = x, ParamFamily = NbinomFamily(size = 25))
 #samplesize:   100
 #estimate:
 #     prob
-#0.2494779
+#0.2471440
 #fixed part of the parameter:
 #size
 #  25
 #Criterion:
 #Kolmogorov distance
-#         0.05944897
+#         0.05226461
 
-## 3.1. one-step estimation: radius known
-## ac) Define infinitesimal robust model
-RobB3 <- InfRobModel(center=BinomFamily(size=25, prob=estimate(est0)),
-                     neighbor=ContNeighborhood(radius=0.5))
+### 3.1. one-step estimation: radius known
+
+### ac) Define infinitesimal robust model
+RobN3 <- InfRobModel(center=NbinomFamily(size=25, prob=estimate(est0)),
+                      neighbor=ContNeighborhood(radius=0.5))
+
 ## bc) Compute optimally robust IC
-IC9 <- optIC(model=RobB3, risk=asMSE())
+
+IC9 <- optIC(model=RobN3, risk=asMSE())
 checkIC(IC9)
 
-#precision of centering:  -2.971365e-17
+#precision of centering:  5.93858e-07
 #precision of Fisher consistency:
-#              prob
-#prob -2.220446e-16
+#             prob
+#prob 8.014067e-05
 #maximum deviation
-#     2.220446e-16
+#     8.014067e-05
 
-## cc) Determine 1-step estimate
 (est1c <- oneStepEstimator(x, IC=IC9, start=est0))
 
 #Evaluations of 1-step estimate:
@@ -1532,30 +1533,30 @@ checkIC(IC9)
 #samplesize:   100
 #estimate:
 #      prob
-#  0.24253514
-# (0.00923989)
+#  0.251879937
+# (0.004632576)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.008537558
+#[1] 0.002146076
 #Infos:
 #     method
 #[1,] "oneStepEstimator"
 #[2,] "oneStepEstimator"
 #     message
-#[1,] "1-step estimate for Binomial family"
+#[1,] "1-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.06058743
+#[1] 0.03064529
 #(partial) influence curve:
 #An object of class “ContIC”
 #### name:        IC of contamination type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.249477874158289
+#prob:   0.249199096954169
 #fixed part of param.:
 #        size:   25
 #trafo:
@@ -1564,11 +1565,11 @@ checkIC(IC9)
 #
 #### neighborhood radius:         0.5
 #
-#### clip:       [1] 0.1211749
-#### cent:       [1] -0.003012083
+#### clip:       [1] 0.06129058
+#### cent:       [1] 0.003713275
 #### stand:
 #           prob
-#prob 0.01220839
+#prob 0.00308521
 #
 #### Infos:
 #     method  message
@@ -1576,60 +1577,55 @@ checkIC(IC9)
 #steps:
 #[1] 1
 
-## instead of ac)-cc) you can also use function roptest
-est1c1 <- roptest(x, BinomFamily(size = 25), eps = 0.05, initial.est = est0)
+est1c1 <- roptest(x, NbinomFamily(size = 25), eps = 0.05, initial.est = est0)
 checkIC(pIC(est1c1))
 
-#precision of centering:  4.569788e-18
+#precision of centering:  3.376922e-18
 #precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
+#            prob
+#prob 7.04511e-05
 #maximum deviation
-#     4.440892e-16
+#      7.04511e-05
 
-## you can also omit step 2
-est1c2 <- roptest(x, BinomFamily(size = 25), eps = 0.05, distance = KolmogorovDist)
+est1c2 <- roptest(x, NbinomFamily(size = 25), eps = 0.05, distance = KolmogorovDist)
 checkIC(pIC(est1c2))
 
-#precision of centering:  4.569788e-18
+#precision of centering:  3.376922e-18
 #precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
+#            prob
+#prob 7.04511e-05
 #maximum deviation
-#     4.440892e-16
+#      7.04511e-05
 
-## Using Cramer-von-Mises MD estimator (default)
-est1c3 <- roptest(x, BinomFamily(size = 25), eps = 0.025)
+est1c3 <- roptest(x, NbinomFamily(size = 25), eps = 0.025)
 checkIC(pIC(est1c3))
 
-#precision of centering:  -7.770327e-10
+#precision of centering:  8.748485e-11
 #precision of Fisher consistency:
 #             prob
-#prob 2.220446e-16
+#prob 8.488734e-05
 #maximum deviation
-#     7.770327e-10
+#     8.488734e-05
 
-## comparison of estimates
+
 estimate(est1c)
 #     prob
-#0.2425351
+#0.2518799
 estimate(est1c1)
 #     prob
-#0.2425351
+#0.2518792
 estimate(est1c2)
 #     prob
-#0.2425351
+#0.2518792
 estimate(est1c3)
 #     prob
-#0.2427226
-
-## confidence intervals
+#0.2502157
 confint(est1c, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2238655 0.2612048
+#prob 0.2426583 0.2611016
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -1642,11 +1638,11 @@ confint(est1c1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2238655 0.2612048
+#prob 0.2426577 0.2611008
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.05, initial.est = est0)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.05, initial.est = est0)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -1655,11 +1651,11 @@ confint(est1c2, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2238655 0.2612048
+#prob 0.2426577 0.2611008
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.05, distance = KolmogorovDist)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.05, distance = KolmogorovDist)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -1668,69 +1664,125 @@ confint(est1c3, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2251586 0.2602866
+#prob 0.2413840 0.2590475
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
-
 ## av) Define infinitesimal robust model
-RobB4 <- InfRobModel(center=BinomFamily(size=25, prob=estimate(est0)),
-                neighbor=TotalVarNeighborhood(radius=0.25))
+RobN4 <- InfRobModel(center=NbinomFamily(size=25, prob=estimate(est0)),
+                 neighbor=TotalVarNeighborhood(radius=0.25))
 ## bv) Compute optimally robust IC
-IC10 <- optIC(model=RobB4, risk=asMSE())
+IC10 <- optIC(model=RobN4, risk=asMSE())
 checkIC(IC10)
+#precision of centering:  6.484067e-07
+#precision of Fisher consistency:
+#             prob
+#prob 7.233166e-05
+#maximum deviation
+#     7.233166e-05
 ## cv) Determine 1-step estimate
 (est1v <- oneStepEstimator(x, IC=IC10, start=est0))
+#Evaluations of 1-step estimate:
+#-------------------------------
+#An object of class “Estimate”
+#generated by call
+#  oneStepEstimator(x = x, IC = IC10, start = est0)
+#samplesize:   100
+#estimate:
+#      prob
+#  0.251562909
+# (0.005826841)
+#fixed part of the parameter:
+#size
+#  25
+#asymptotic (co)variance (multiplied with samplesize):
+#[1] 0.003395207
+#Infos:
+#     method
+#[1,] "oneStepEstimator"
+#[2,] "oneStepEstimator"
+#     message
+#[1,] "1-step estimate for Negative Binomial family"
+#[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
+#asymptotic bias:
+#[1] 0.03055969
+#(partial) influence curve:
+#An object of class “TotalVarIC”
+#### name:        IC of total variation type
+#
+#### L2-differentiable parametric family:         Negative Binomial family
+#### param:      An object of class "ParamFamParameter"
+#name:   probability of success
+#prob:   0.249199096954169
+#fixed part of param.:
+#        size:   25
+#trafo:
+#     prob
+#prob    1
+#
+#### neighborhood radius:         0.25
+#
+#### clipLo:     [1] -0.06692041
+#### clipUp:     [1] 0.05531835
+#### stand:
+#            prob
+#prob 0.003063591
+#
+#### Infos:
+#     method  message
+#[1,] "optIC" "optimally robust IC for ‘asMSE’"
+#steps:
+#[1] 1
 
 ## instead of av)-cv) you can also use function roptest
-est1v1 <- roptest(x, BinomFamily(size = 25), eps = 0.025, initial.est = est0,
-                  neighbor = TotalVarNeighborhood())
+est1v1 <- roptest(x, NbinomFamily(size = 25), eps = 0.025, initial.est = est0,
+                   neighbor = TotalVarNeighborhood())
 checkIC(pIC(est1v1))
-#precision of centering:  -9.843168e-15
+#precision of centering:  4.984589e-14
 #precision of Fisher consistency:
-#              prob
-#prob -2.220446e-16
+#             prob
+#prob 6.263991e-05
 #maximum deviation
-#
-     9.843168e-15
+#     6.263991e-05
+
 ## you can also omit step 2
-est1v2 <- roptest(x, BinomFamily(size = 25), eps = 0.025,
-                  neighbor = TotalVarNeighborhood(), distance = KolmogorovDist)
+est1v2 <- roptest(x, NbinomFamily(size = 25), eps = 0.025,
+                   neighbor = TotalVarNeighborhood(), distance = KolmogorovDist)
 checkIC(pIC(est1v2))
-#precision of centering:  -9.843168e-15
+#precision of centering:  4.984589e-14
 #precision of Fisher consistency:
-#              prob
-#prob -2.220446e-16
+#             prob
+#prob 6.263991e-05
 #maximum deviation
-#     9.843168e-15
+#     6.263991e-05
 
 ## Using Cramer-von-Mises MD estimator (default)
-est1v3 <- roptest(x, BinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood())
+est1v3 <- roptest(x, NbinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood())
 checkIC(pIC(est1v3))
-#precision of centering:  6.67169e-18
+#precision of centering:  3.647907e-14
 #precision of Fisher consistency:
-#              prob
-#prob -1.110223e-16
+#             prob
+#prob 6.370115e-05
 #maximum deviation
-#     1.110223e-16
+#     6.370115e-05
 
 ## comparison of estimates
 estimate(est1v)
 #     prob
-#0.2429921
+#0.2515629
 estimate(est1v1)
 #     prob
-#0.2429921
+#0.2515621
 estimate(est1v2)
 #     prob
-#0.2429921
+#0.2515621
 estimate(est1v3)
 #     prob
-#0.2424179
+#0.2516431
 
 ## confidence intervals
 confint(est1v, symmetricBias())
@@ -1738,7 +1790,7 @@ confint(est1v, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2186101 0.2673741
+#prob 0.2399644 0.2631614
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -1751,12 +1803,12 @@ confint(est1v1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2186101 0.2673741
+#prob 0.2399638 0.2631603
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, initial.est = est0,
-#    neighbor = TotalVarNeighborhood())
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    initial.est = est0, neighbor = TotalVarNeighborhood())
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -1765,12 +1817,12 @@ confint(est1v2, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2186101 0.2673741
+#prob 0.2399638 0.2631603
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood(),
-#    distance = KolmogorovDist)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    neighbor = TotalVarNeighborhood(), distance = KolmogorovDist)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -1779,20 +1831,20 @@ confint(est1v3, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2182528 0.2665830
+#prob 0.2400033 0.2632828
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood())
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    neighbor = TotalVarNeighborhood())
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
 
 
 ## 3.2. k-step estimation: radius known
-IC9 <- optIC(model=RobB3, risk=asMSE())
+IC9 <- optIC(model=RobN3, risk=asMSE())
 (est2c <- kStepEstimator(x, IC=IC9, start=est0, steps = 3L))
-
 #Evaluations of 3-step estimate:
 #-------------------------------
 #An object of class “Estimate”
@@ -1801,30 +1853,30 @@ IC9 <- optIC(model=RobB3, risk=asMSE())
 #samplesize:   100
 #estimate:
 #      prob
-#  0.241900493
-# (0.009141218)
+#  0.252059546
+# (0.004676936)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.008356187
+#[1] 0.002187373
 #Infos:
 #     method
 #[1,] "kStepEstimator"
 #[2,] "kStepEstimator"
 #     message
-#[1,] "3-step estimate for Binomial family"
+#[1,] "3-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.05992703
+#[1] 0.03093139
 #(partial) influence curve:
 #An object of class “ContIC”
 #### name:        IC of contamination type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.241953383964985
+#prob:   0.252050979065772
 #fixed part of param.:
 #        size:   25
 #trafo:
@@ -1833,11 +1885,11 @@ IC9 <- optIC(model=RobB3, risk=asMSE())
 #
 #### neighborhood radius:         0.5
 #
-#### clip:       [1] 0.1198541
-#### cent:       [1] -0.004676326
+#### clip:       [1] 0.06186279
+#### cent:       [1] 0.003740501
 #### stand:
-#           prob
-#prob 0.01194744
+#            prob
+#prob 0.003144124
 #
 #### Infos:
 #     method  message
@@ -1845,46 +1897,49 @@ IC9 <- optIC(model=RobB3, risk=asMSE())
 #steps:
 #[1] 3
 
-est2c1 <- roptest(x, BinomFamily(size = 25), eps = 0.05, initial.est = est0, steps = 3L)
+
+est2c1 <- roptest(x, NbinomFamily(size = 25), eps = 0.05, initial.est = est0, steps = 3L)
 checkIC(pIC(est2c1))
-#precision of centering:  -4.788156e-12
-#precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
-#maximum deviation
-#     4.788156e-12
-est2c2 <- roptest(x, BinomFamily(size = 25), eps = 0.05, steps = 3L,
-                  distance = KolmogorovDist)
-checkIC(pIC(est2c2))
-#precision of centering:  -4.788156e-12
-#precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
-#maximum deviation
-#     4.788156e-12
-# Using Cramer-von-Mises MD estimator
-est2c3 <- roptest(x, BinomFamily(size = 25), eps = 0.05, steps = 3L)
-checkIC(pIC(est2c3))
-#precision of centering:  -6.068637e-12
+#precision of centering:  -2.077441e-18
 #precision of Fisher consistency:
 #             prob
-#prob 4.440892e-16
+#prob 6.645565e-05
 #maximum deviation
-#     6.068637e-12
+#     6.645565e-05
+
+est2c2 <- roptest(x, NbinomFamily(size = 25), eps = 0.05, steps = 3L,
+                   distance = KolmogorovDist)
+checkIC(pIC(est2c2))
+#precision of centering:  -2.077441e-18
+#precision of Fisher consistency:
+#             prob
+#prob 6.645565e-05
+#maximum deviation
+#     6.645565e-05
+
+# Using Cramer-von-Mises MD estimator
+est2c3 <- roptest(x, NbinomFamily(size = 25), eps = 0.05, steps = 3L)
+checkIC(pIC(est2c3))
+#precision of centering:  5.311002e-18
+#precision of Fisher consistency:
+#             prob
+#prob 6.642177e-05
+#maximum deviation
+#     6.642177e-05
 
 ## comparison of estimates
 estimate(est2c)
 #     prob
-#0.2419005
+#0.2520595
 estimate(est2c1)
 #     prob
-#0.2419005
+#0.2520595
 estimate(est2c2)
 #     prob
-#0.2419005
+#0.2520595
 estimate(est2c3)
 #     prob
-#0.2418961
+#0.2520597
 
 ## confidence intervals
 confint(est2c, symmetricBias())
@@ -1892,7 +1947,7 @@ confint(est2c, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2234362 0.2603648
+#prob 0.2427483 0.2613708
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -1905,11 +1960,11 @@ confint(est2c1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2234362 0.2603648
+#prob 0.2427483 0.2613708
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.05, initial.est = est0,
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.05, initial.est = est0,
 #    steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size
@@ -1919,11 +1974,11 @@ confint(est2c2, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2234362 0.2603648
+#prob 0.2427483 0.2613708
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.05, steps = 3L,
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.05, steps = 3L,
 #    distance = KolmogorovDist)
 #Fixed part of the parameter at which estimate was produced:
 #size
@@ -1933,18 +1988,17 @@ confint(est2c3, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2234331 0.2603591
+#prob 0.2427483 0.2613712
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.05, steps = 3L)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.05, steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
-  
-IC10 <- optIC(model=RobB4, risk=asMSE())
-(est2v <- kStepEstimator(x, IC=IC10, start=est0, steps = 3L))
 
+IC10 <- optIC(model=RobN4, risk=asMSE())
+(est2v <- kStepEstimator(x, IC=IC10, start=est0, steps = 3L))
 #Evaluations of 3-step estimate:
 #-------------------------------
 #An object of class “Estimate”
@@ -1953,30 +2007,30 @@ IC10 <- optIC(model=RobB4, risk=asMSE())
 #samplesize:   100
 #estimate:
 #      prob
-#  0.24237558
-# (0.01195027)
+#  0.251762581
+# (0.005876303)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.01428089
+#[1] 0.003453094
 #Infos:
 #     method
 #[1,] "kStepEstimator"
 #[2,] "kStepEstimator"
 #     message
-#[1,] "3-step estimate for Binomial family"
+#[1,] "3-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.05982794
+#[1] 0.03081803
 #(partial) influence curve:
 #An object of class “TotalVarIC”
 #### name:        IC of total variation type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.242410409425593
+#prob:   0.251747739764054
 #fixed part of param.:
 #        size:   25
 #trafo:
@@ -1985,11 +2039,11 @@ IC10 <- optIC(model=RobB4, risk=asMSE())
 #
 #### neighborhood radius:         0.25
 #
-#### clipLo:     [1] -0.1148244
-#### clipUp:     [1] 0.1244874
+#### clipLo:     [1] -0.06750276
+#### clipUp:     [1] 0.05576935
 #### stand:
 #           prob
-#prob 0.01194066
+#prob 0.00311586
 #
 #### Infos:
 #     method  message
@@ -1997,66 +2051,67 @@ IC10 <- optIC(model=RobB4, risk=asMSE())
 #steps:
 #[1] 3
 
-checkIC(pIC(est2v))
-#precision of centering:  -2.680039e-18
-#precision of Fisher consistency:
-#              prob
-#prob -1.110223e-16
-#maximum deviation
-#     1.110223e-16
 
-est2v1 <- roptest(x, BinomFamily(size = 25), eps = 0.025, initial.est = est0, 
-                  steps = 3L, neighbor = TotalVarNeighborhood())
+checkIC(pIC(est2v))
+#precision of centering:  5.496728e-13
+#precision of Fisher consistency:
+#             prob
+#prob 6.135889e-05
+#maximum deviation
+#     6.135889e-05
+
+est2v1 <- roptest(x, NbinomFamily(size = 25), eps = 0.025, initial.est = est0,
+                   steps = 3L, neighbor = TotalVarNeighborhood())
 checkIC(pIC(est2v1))
-#precision of centering:  7.299035e-18
+#precision of centering:  5.49678e-13
 #precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
+#            prob
+#prob 6.13594e-05
 #maximum deviation
-#     4.440892e-16
-     
-est2v2 <- roptest(x, BinomFamily(size = 25), eps = 0.025, steps = 3L,
-                  distance = KolmogorovDist, neighbor = TotalVarNeighborhood())
+#      6.13594e-05
+
+est2v2 <- roptest(x, NbinomFamily(size = 25), eps = 0.025, steps = 3L,
+                   distance = KolmogorovDist, neighbor = TotalVarNeighborhood())
 checkIC(pIC(est2v2))
-#precision of centering:  7.299035e-18
+#precision of centering:  5.49678e-13
 #precision of Fisher consistency:
-#              prob
-#prob -4.440892e-16
+#            prob
+#prob 6.13594e-05
 #maximum deviation
-#     4.440892e-16
+#      6.13594e-05
 
 ## Using Cramer-von-Mises MD estimator
-est2v3 <- roptest(x, BinomFamily(size = 25), eps = 0.025, steps = 3L, 
-                  neighbor = TotalVarNeighborhood())
+est2v3 <- roptest(x, NbinomFamily(size = 25), eps = 0.025, steps = 3L,
+                   neighbor = TotalVarNeighborhood())
 checkIC(pIC(est2v3))
-#precision of centering:  3.543879e-18
+#precision of centering:  5.493408e-13
 #precision of Fisher consistency:
-#              prob
-#prob -3.330669e-16
+#             prob
+#prob 6.130999e-05
 #maximum deviation
-#     3.330669e-16
+#     6.130999e-05
 
 ## comparison of estimates
 estimate(est2v)
 #     prob
-#0.2423756
+#0.2517626
 estimate(est2v1)
 #     prob
-#0.2423756
+#0.2517626
 estimate(est2v2)
 #     prob
-#0.2423756
+#0.2517626
 estimate(est2v3)
 #     prob
-#0.2423735
+#0.2517631
 
 ## confidence intervals
 confint(est2v, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
-#         2.5 %    97.5 %
-#prob 0.2182385 0.2665126
+#         2.5 %   97.5 %
+#prob 0.2400641 0.263461
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2068,13 +2123,13 @@ confint(est2v1, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
-#         2.5 %    97.5 %
-#prob 0.2182385 0.2665126
+#         2.5 %   97.5 %
+#prob 0.2400641 0.263461
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, initial.est = est0,
-#    neighbor = TotalVarNeighborhood(), steps = 3L)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    initial.est = est0, neighbor = TotalVarNeighborhood(), steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -2082,13 +2137,13 @@ confint(est2v2, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
-#         2.5 %    97.5 %
-#prob 0.2182385 0.2665126
+#         2.5 %   97.5 %
+#prob 0.2400641 0.263461
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood(),
-#    steps = 3L, distance = KolmogorovDist)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    neighbor = TotalVarNeighborhood(), steps = 3L, distance = KolmogorovDist)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -2097,22 +2152,21 @@ confint(est2v3, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2182378 0.2665092
+#prob 0.2400644 0.2634618
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps = 0.025, neighbor = TotalVarNeighborhood(),
-#    steps = 3L)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps = 0.025,
+#    neighbor = TotalVarNeighborhood(), steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
 
 
 ## 4.1. one-step estimation: radius interval
-IC11 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
-                neighbor=ContNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
+IC11 <- radiusMinimaxIC(L2Fam=NbinomFamily(size=25, prob=estimate(est0)),
+                 neighbor=ContNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
 (est3c <- oneStepEstimator(x, IC=IC11, start=est0))
-
 #Evaluations of 1-step estimate:
 #-------------------------------
 #An object of class “Estimate”
@@ -2121,213 +2175,278 @@ IC11 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
 #samplesize:   100
 #estimate:
 #      prob
-#  0.242379282
-# (0.009339235)
+#  0.25268280
+# (0.00470825)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.00872213
+#[1] 0.002216761
 #Infos:
 #     method
 #[1,] "oneStepEstimator"
 #[2,] "oneStepEstimator"
 #     message
-#[1,] "1-step estimate for Binomial family"
+#[1,] "1-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07121993
+#[1] 0.03607630
 #(partial) influence curve:
 #An object of class “ContIC”
 #### name:        IC of contamination type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.249477874158289
+#prob:   0.249199096954169
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.6006922
+#### neighborhood radius:         0.6077586
 #
-#### clip:       [1] 0.1185631
-#### cent:       [1] -0.00453307
+#### clip:       [1] 0.05935958
+#### cent:       [1] 0.004542211
 #### stand:
-#           prob
-#prob 0.01379441
+#            prob
+#prob 0.003518260
 #
 #### Infos:
 #     method            message
 #[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, Inf]"
-#[2,] "radiusMinimaxIC" "least favorable radius: 0.601"
-#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.165"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.608"
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.189"
 #steps:
 #[1] 1
+
 
 checkIC(pIC(est3c))
-
-#precision of centering:  9.537084e-18
+#precision of centering:  5.751481e-07
 #precision of Fisher consistency:
-#              prob
-#prob -2.220446e-16
+#             prob
+#prob 7.761578e-05
 #maximum deviation
-#     2.220446e-16
+#     7.761578e-05
 
-IC12 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
-                neighbor=TotalVarNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
+
+IC12 <- radiusMinimaxIC(L2Fam=NbinomFamily(size=25, prob=estimate(est0)),
+                 neighbor=TotalVarNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
 (est3v <- oneStepEstimator(x, IC=IC12, start=est0))
-checkIC(pIC(est3v))
-
-## maximum radius for given sample size n: sqrt(n)*0.5
-(est3c1 <- roptest(x, BinomFamily(size = 25), eps.upper = 0.5))
 #Evaluations of 1-step estimate:
 #-------------------------------
 #An object of class “Estimate”
 #generated by call
-#  roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5)
+#  oneStepEstimator(x = x, IC = IC12, start = est0)
 #samplesize:   100
 #estimate:
 #      prob
-#  0.241842958
-# (0.009234894)
+#  0.252242480
+# (0.006465472)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.008528328
+#[1] 0.004180232
 #Infos:
-#     method    message
-#[1,] "roptest" "1-step estimate for Binomial family"
-#[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
+#     method
+#[1,] "oneStepEstimator"
+#[2,] "oneStepEstimator"
+#     message
+#[1,] "1-step estimate for Negative Binomial family"
+#[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07044238
-#(partial) influence curve:
-#An object of class “ContIC”
-#### name:        IC of contamination type
-#
-#### L2-differentiable parametric family:         Binomial family
-#### param:      An object of class "ParamFamParameter"
-#name:   probability of success
-#prob:   0.24311883705201
-#fixed part of param.:
-#        size:   25
-#trafo:
-#     prob
-#prob    1
-#
-#### neighborhood radius:         0.5967953
-#
-#### clip:       [1] 0.1180344
-#### cent:       [1] -0.005169814
-#### stand:
-#           prob
-#prob 0.01349046
-#
-#### Infos:
-#     method            message
-#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, 5]"
-#[2,] "radiusMinimaxIC" "least favorable radius: 0.597"
-#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.159"
-#steps:
-#[1] 1
-
-checkIC(pIC(est3c1))
-
-#precision of centering:  -1.335405e-18
-#precision of Fisher consistency:
-#              prob
-#prob -1.110223e-16
-#maximum deviation
-#     1.110223e-16
-
-(est3v1 <- roptest(x, BinomFamily(size = 25), eps.upper = 0.5, neighbor = TotalVarNeighborhood()))
-
-#Evaluations of 1-step estimate:
-#-------------------------------
-#An object of class “Estimate”
-#generated by call
-#  roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
-#    neighbor = TotalVarNeighborhood())
-#samplesize:   100
-#estimate:
-#      prob
-#  0.24231510
-# (0.01333293)
-#fixed part of the parameter:
-#size
-#  25
-#asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.01777669
-#Infos:
-#     method    message
-#[1,] "roptest" "1-step estimate for Binomial family"
-#[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
-#asymptotic bias:
-#[1] 0.07270451
+#[1] 0.03648773
 #(partial) influence curve:
 #An object of class “TotalVarIC”
 #### name:        IC of total variation type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.24311883705201
+#prob:   0.249199096954169
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.3104128
+#### neighborhood radius:         0.3088797
 #
-#### clipLo:     [1] -0.1113605
-#### clipUp:     [1] 0.1228583
+#### clipLo:     [1] -0.06424131
+#### clipUp:     [1] 0.05388796
 #### stand:
-#           prob
-#prob 0.01386519
+#            prob
+#prob 0.003537267
+#
+#### Infos:
+#     method            message
+#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, Inf]"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.309"
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.183"
+#steps:
+#[1] 1
+checkIC(pIC(est3v))
+#precision of centering:  6.224275e-07
+#precision of Fisher consistency:
+#             prob
+#prob 7.046135e-05
+#maximum deviation
+#     7.046135e-05
+
+## maximum radius for given sample size n: sqrt(n)*0.5
+(est3c1 <- roptest(x, NbinomFamily(size = 25), eps.lower= 0.001, eps.upper = 0.5))
+
+#Evaluations of 1-step estimate:
+#-------------------------------
+#An object of class “Estimate” 
+#generated by call
+#  roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.lower = 0.001, 
+#    eps.upper = 0.5)
+#samplesize:   100
+#estimate:
+#      prob    
+#  0.246522069 
+# (0.004640427)
+#fixed part of the parameter:
+#size 
+#  25 
+#asymptotic (co)variance (multiplied with samplesize):
+#[1] 0.002153356
+#Infos:
+#     method    message                                                  
+#[1,] "roptest" "1-step estimate for Negative Binomial family"           
+#[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
+#asymptotic bias:
+#[1] 0.03488933
+#(partial) influence curve:
+#An object of class “ContIC” 
+#### name:        IC of contamination type 
+#
+#### L2-differentiable parametric family:         Negative Binomial family 
+#### param:      An object of class "ParamFamParameter"
+#name:   probability of success
+#prob:   0.245546087232864
+#fixed part of param.:
+#        size:   25
+#trafo:
+#     prob
+#prob    1
+#
+#### neighborhood radius:         0.5928425 
+#
+#### clip:       [1] 0.05885092
+#### cent:       [1] 0.004367926
+#### stand:
+#            prob
+#prob 0.003370622
+#
+#### Infos:
+#     method            message                                          
+#[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0.01, 5]"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.593"                  
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.181"            
+#steps:
+#[1] 1
+
+
+checkIC(pIC(est3c1))
+
+#precision of centering:  -2.995982e-18 
+#precision of Fisher consistency:
+#             prob
+#prob 6.959669e-05
+#maximum deviation 
+#     6.959669e-05 
+
+(est3v1 <- roptest(x, NbinomFamily(size = 25), eps.upper = 0.5, neighbor = TotalVarNeighborhood()))
+
+#maximum iterations reached!
+# achieved precision:     0.02142607
+#Evaluations of 1-step estimate:
+#-------------------------------
+#An object of class “Estimate”
+#generated by call
+#  roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.upper = 0.5,
+#    neighbor = TotalVarNeighborhood())
+#samplesize:   100
+#estimate:
+#      prob
+#  0.25237905
+# (0.00646375)
+#fixed part of the parameter:
+#size
+#  25
+#asymptotic (co)variance (multiplied with samplesize):
+#[1] 0.004178006
+#Infos:
+#     method    message
+#[1,] "roptest" "1-step estimate for Negative Binomial family"
+#[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
+#asymptotic bias:
+#[1] 0.03641902
+#(partial) influence curve:
+#An object of class “TotalVarIC”
+#### name:        IC of total variation type
+#
+#### L2-differentiable parametric family:         Negative Binomial family
+#### param:      An object of class "ParamFamParameter"
+#name:   probability of success
+#prob:   0.250253492473826
+#fixed part of param.:
+#        size:   25
+#trafo:
+#     prob
+#prob    1
+#
+#### neighborhood radius:         0.3068304
+#
+#### clipLo:     [1] -0.06456431
+#### clipUp:     [1] 0.05412999
+#### stand:
+#            prob
+#prob 0.003544421
 #
 #### Infos:
 #     method            message
 #[1,] "radiusMinimaxIC" "radius minimax IC for radius interval [0, 5]"
-#[2,] "radiusMinimaxIC" "least favorable radius: 0.31"
-#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.166"
+#[2,] "radiusMinimaxIC" "least favorable radius: 0.307"
+#[3,] "radiusMinimaxIC" "maximum ‘asMSE’-inefficiency: 1.181"
 #steps:
 #[1] 1
 
 checkIC(pIC(est3v1))
 
-#precision of centering:  -1.179940e-11
+#precision of centering:  5.876106e-18
 #precision of Fisher consistency:
-#     prob
-#prob    0
+#            prob
+#prob 6.18579e-05
 #maximum deviation
-#     1.179940e-11
+#      6.18579e-05
 
 
 ## comparison of estimates
 estimate(est3c)
 #     prob
-#0.2423793
+#0.2526828
 estimate(est3v)
 #     prob
-#0.2428346
+#0.2522425
 estimate(est3c1)
-#     prob
-#0.2418430
+#     prob 
+#0.2455461
 estimate(est3v1)
-#     prob
-#0.2423151
+#     prob 
+#0.25237905
 
 ## confidence intervals
 confint(est3c, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
-#         2.5 %   97.5 %
-#prob 0.2234096 0.261349
+#         2.5 %    97.5 %
+#prob 0.2432849 0.2620807
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2340,7 +2459,7 @@ confint(est3v, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2154232 0.2702460
+#prob 0.2393345 0.2651505
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2353,7 +2472,7 @@ confint(est3c1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2230924 0.2605935
+#prob 0.2372651 0.2557790
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2366,11 +2485,11 @@ confint(est3v1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2152137 0.2694165
+#prob 0.2394749 0.2652832
 #Type of estimator: 1-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.upper = 0.5,
 #    neighbor = TotalVarNeighborhood())
 #Fixed part of the parameter at which estimate was produced:
 #size
@@ -2378,10 +2497,9 @@ confint(est3v1, symmetricBias())
 
 
 ## 4.2. k-step estimation: radius interval
-IC11 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
-                neighbor=ContNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
+IC11 <- radiusMinimaxIC(L2Fam=NbinomFamily(size=25, prob=estimate(est0)),
+                 neighbor=ContNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
 (est4c <- kStepEstimator(x, IC=IC11, start=est0, steps = 3L))
-
 #Evaluations of 3-step estimate:
 #-------------------------------
 #An object of class “Estimate”
@@ -2390,43 +2508,43 @@ IC11 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
 #samplesize:   100
 #estimate:
 #      prob
-#  0.24171362
-# (0.00922172)
+#  0.252744439
+# (0.004763277)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.008504013
+#[1] 0.002268880
 #Infos:
 #     method
 #[1,] "kStepEstimator"
 #[2,] "kStepEstimator"
 #     message
-#[1,] "3-step estimate for Binomial family"
+#[1,] "3-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07071585
+#[1] 0.03651059
 #(partial) influence curve:
 #An object of class “ContIC”
 #### name:        IC of contamination type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.241769273363845
+#prob:   0.252743351251028
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.6006922
+#### neighborhood radius:         0.6077586
 #
-#### clip:       [1] 0.1177239
-#### cent:       [1] -0.005337597
+#### clip:       [1] 0.06007416
+#### cent:       [1] 0.004611258
 #### stand:
-#           prob
-#prob 0.01350474
+#            prob
+#prob 0.003601903
 #
 #### Infos:
 #     method  message
@@ -2434,17 +2552,17 @@ IC11 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
 #steps:
 #[1] 3
 
+
 checkIC(pIC(est4c))
-#precision of centering:  -1.717330e-17
+#precision of centering:  7.90373e-11
 #precision of Fisher consistency:
 #             prob
-#prob 2.220446e-16
+#prob 6.837836e-05
 #maximum deviation
-#     2.220446e-16
-     
-IC12 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
-                neighbor=TotalVarNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
-(est4v <- kStepEstimator(x, IC=IC12, start=est0, steps = 3L))
+#     6.837836e-05
+
+IC12 <- radiusMinimaxIC(L2Fam=NbinomFamily(size=25, prob=estimate(est0)),
+                 neighbor=TotalVarNeighborhood(), risk=asMSE(), loRad=0, upRad=Inf)
 
 #Evaluations of 3-step estimate:
 #-------------------------------
@@ -2454,43 +2572,43 @@ IC12 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
 #samplesize:   100
 #estimate:
 #      prob
-#  0.24224203
-# (0.01335018)
+#  0.252684415
+# (0.006539431)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.01782272
+#[1] 0.004276416
 #Infos:
 #     method
 #[1,] "kStepEstimator"
 #[2,] "kStepEstimator"
 #     message
-#[1,] "3-step estimate for Binomial family"
+#[1,] "3-step estimate for Negative Binomial family"
 #[2,] "computation of IC, trafo, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07293007
+#[1] 0.03691656
 #(partial) influence curve:
 #An object of class “TotalVarIC”
 #### name:        IC of total variation type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.242288609339931
+#prob:   0.252646956249659
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.3116990
+#### neighborhood radius:         0.3088797
 #
-#### clipLo:     [1] -0.1111696
-#### clipUp:     [1] 0.1228064
+#### clipLo:     [1] -0.06500297
+#### clipUp:     [1] 0.05451465
 #### stand:
-#           prob
-#prob 0.01387656
+#            prob
+#prob 0.003619062
 #
 #### Infos:
 #     method  message
@@ -2499,59 +2617,59 @@ IC12 <- radiusMinimaxIC(L2Fam=BinomFamily(size=25, prob=estimate(est0)),
 #[1] 3
 
 checkIC(pIC(est4v))
-#precision of centering:  -1.454523e-11
+#precision of centering:  1.975176e-14
 #precision of Fisher consistency:
 #             prob
-#prob 4.440892e-16
+#prob 6.190507e-05
 #maximum deviation
-#     1.454523e-11
+#     6.190507e-05
 
-## maximum radius for given sample size n: sqrt(n)*0.5
-(est4c1 <- roptest(x, BinomFamily(size = 25), eps.upper = 0.5, steps = 3L))
+# maximum radius for given sample size n: sqrt(n)*0.5
+(est4c1 <- roptest(x, NbinomFamily(size = 25), eps.upper = 0.5, steps = 3L))
 
 #Evaluations of 3-step estimate:
 #-------------------------------
 #An object of class “Estimate”
 #generated by call
-#  roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
-#    steps = 3L)
+#  roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.lower = 0.001,
+#    eps.upper = 0.5, steps = 3L)
 #samplesize:   100
 #estimate:
 #      prob
-#  0.241716814
-# (0.009217234)
+#  0.252656191
+# (0.004751824)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.00849574
+#[1] 0.002257983
 #Infos:
 #     method    message
-#[1,] "roptest" "3-step estimate for Binomial family"
+#[1,] "roptest" "3-step estimate for Negative Binomial family"
 #[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07030448
+#[1] 0.03572574
 #(partial) influence curve:
 #An object of class “ContIC”
 #### name:        IC of contamination type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.241727413448719
+#prob:   0.252655619320179
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.5967953
+#### neighborhood radius:         0.5926806
 #
-#### clip:       [1] 0.1178033
-#### cent:       [1] -0.005316906
+#### clip:       [1] 0.06027824
+#### cent:       [1] 0.004489273
 #### stand:
-#           prob
-#prob 0.01343846
+#            prob
+#prob 0.003534312
 #
 #### Infos:
 #     method  message
@@ -2560,59 +2678,61 @@ checkIC(pIC(est4v))
 #[1] 3
 
 checkIC(pIC(est4c1))
-#precision of centering:  -1.230939e-17
+
+#precision of centering:  1.796719e-13
 #precision of Fisher consistency:
-#              prob
-#prob -3.330669e-16
+#             prob
+#prob 6.941785e-05
 #maximum deviation
-#     3.330669e-16
+#     6.941785e-05
 
-(est4v1 <- roptest(x, BinomFamily(size = 25), eps.upper = 0.5, neighbor = TotalVarNeighborhood(),
-        steps = 3L))
-
+(est4v1 <- roptest(x, NbinomFamily(size = 25), eps.upper = 0.5, neighbor = TotalVarNeighborhood(),
+         steps = 3L))
+#maximum iterations reached!
+# achieved precision:     0.02142607
 #Evaluations of 3-step estimate:
 #-------------------------------
 #An object of class “Estimate”
 #generated by call
-#  roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
+#  roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.upper = 0.5,
 #    neighbor = TotalVarNeighborhood(), steps = 3L)
 #samplesize:   100
 #estimate:
-#      prob
-#  0.24224135
-# (0.01331745)
+#     prob
+#  0.2526652
+# (0.0065150)
 #fixed part of the parameter:
 #size
 #  25
 #asymptotic (co)variance (multiplied with samplesize):
-#[1] 0.01773545
+#[1] 0.004244522
 #Infos:
 #     method    message
-#[1,] "roptest" "3-step estimate for Binomial family"
+#[1,] "roptest" "3-step estimate for Negative Binomial family"
 #[2,] "roptest" "computation of IC, asvar and asbias via useLast = FALSE"
 #asymptotic bias:
-#[1] 0.07266429
+#[1] 0.03670764
 #(partial) influence curve:
 #An object of class “TotalVarIC”
 #### name:        IC of total variation type
 #
-#### L2-differentiable parametric family:         Binomial family
+#### L2-differentiable parametric family:         Negative Binomial family
 #### param:      An object of class "ParamFamParameter"
 #name:   probability of success
-#prob:   0.242247135068009
+#prob:   0.252641193060971
 #fixed part of param.:
 #        size:   25
 #trafo:
 #     prob
 #prob    1
 #
-#### neighborhood radius:         0.3104128
+#### neighborhood radius:         0.3068304
 #
-#### clipLo:     [1] -0.1112452
-#### clipUp:     [1] 0.122844
+#### clipLo:     [1] -0.06507884
+#### clipUp:     [1] 0.05455611
 #### stand:
-#           prob
-#prob 0.01383111
+#            prob
+#prob 0.003600885
 #
 #### Infos:
 #     method  message
@@ -2621,34 +2741,34 @@ checkIC(pIC(est4c1))
 #[1] 3
 
 checkIC(pIC(est4v1))
-#precision of centering:  -1.224149e-11
+#precision of centering:  1.138307e-14
 #precision of Fisher consistency:
-#              prob
-#prob -1.110223e-16
+#             prob
+#prob 6.200529e-05
 #maximum deviation
-#     1.224149e-11
+#     6.200529e-05
 
 ## comparison of estimates
 estimate(est4c)
 #     prob
-#0.2417136
+#0.2527444
 estimate(est4v)
 #     prob
-#0.2422420
+#0.2526844
 estimate(est4c1)
 #     prob
-#0.2417168
+#0.2526562
 estimate(est4v1)
 #     prob
-#0.2422414
+#0.2526652
 
 ## confidence intervals
 confint(est4c, symmetricBias())
 #A[n] asymptotic (LAN-based), uniform (bias-aware)
 # confidence interval:
 #for symmetric Bias
-#         2.5 %  97.5 %
-#prob 0.2229873 0.26044
+#         2.5 %    97.5 %
+#prob 0.2432347 0.2622542
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2661,7 +2781,7 @@ confint(est4v, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2151025 0.2693815
+#prob 0.2396260 0.2657429
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
@@ -2674,12 +2794,12 @@ confint(est4c1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2230034 0.2604303
+#prob 0.2431730 0.2621394
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
-#    steps = 3L)
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.lower = 0.001,
+#    eps.upper = 0.5, steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size
 #  25
@@ -2688,11 +2808,11 @@ confint(est4v1, symmetricBias())
 # confidence interval:
 #for symmetric Bias
 #         2.5 %    97.5 %
-#prob 0.2151719 0.2693108
+#prob 0.2396568 0.2656735
 #Type of estimator: 3-step estimate
 #samplesize:   100
 #Call by which estimate was produced:
-#roptest(x = x, L2Fam = BinomFamily(size = 25), eps.upper = 0.5,
+#roptest(x = x, L2Fam = NbinomFamily(size = 25), eps.upper = 0.5,
 #    neighbor = TotalVarNeighborhood(), steps = 3L)
 #Fixed part of the parameter at which estimate was produced:
 #size

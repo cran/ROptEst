@@ -1,11 +1,11 @@
 ###############################################################################
-## Example: Normal Scale
+## Example: Normal Location
 ###############################################################################
 require(ROptEst)
 options("newDevice"=TRUE)
 
-## generates Normal Scale Family with scale = 3
-N0 <- NormScaleFamily(mean=2, sd=3) 
+## generates Normal Location Family with scale = 3
+N0 <- NormLocationFamily(mean=2, sd=3)
 N0        # show G0
 plot(N0)  # plot of Norm(mean = 2, sd = 3) and L_2 derivative
 checkL2deriv(N0)
@@ -103,16 +103,32 @@ Risks(N0.IC6)
 plot(N0.IC6)
 
 ## radius minimax IC
-(N0.IC7 <- radiusMinimaxIC(L2Fam=N0, neighbor=ContNeighborhood(), 
+(N0.IC7 <- radiusMinimaxIC(L2Fam=N0, neighbor=ContNeighborhood(),
                 risk=asMSE(), loRad=0, upRad=Inf))
 checkIC(N0.IC7)
 Risks(N0.IC7)
 plot(N0.IC7)
-(N0.IC8 <- radiusMinimaxIC(L2Fam=N0, neighbor=TotalVarNeighborhood(), 
+(N0.IC8 <- radiusMinimaxIC(L2Fam=N0, neighbor=TotalVarNeighborhood(),
                 risk=asMSE(), loRad=0, upRad=Inf))
 checkIC(N0.IC8)
 Risks(N0.IC8)
 plot(N0.IC8)
+
+getReq(asMSE(),neighbor,N0.ICA,N0.IC1,n=1)
+getReq(asMSE(),neighbor,N0.ICA,N0.IC1,n=30)
+getReq(asL1(),neighbor,N0.ICA,N0.IC1,n=30)
+getReq(asL4(),neighbor,N0.ICA,N0.IC1,n=30)
+getReq(asMSE(),neighbor,N0.ICA,N0.IC7,n=30)
+getReq(asL1(),neighbor,N0.ICA,N0.IC7,n=30)
+getReq(asL4(),neighbor,N0.ICA,N0.IC7,n=30)
+getReq(asMSE(),neighbor,N0.IC1,N0.IC7,n=30)
+
+
+getMaxIneff(N0.ICA,neighbor=ContNeighborhood())
+getMaxIneff(N0.IC1,neighbor=ContNeighborhood())
+getMaxIneff(N0.IC7,neighbor=ContNeighborhood())
+
+
 
 ## least favorable radius
 ## (may take quite some time!)
@@ -123,17 +139,17 @@ plot(N0.IC8)
 
 
 ## For estimation use function roptest
-ind <- rbinom(1e2, size=1, prob=0.05) 
+ind <- rbinom(1e2, size=1, prob=0.05)
 x <- rnorm(1e2, mean=1, sd = (1-ind)+ind*9)
 
 ## 1-step: contamination known
-est1 <- roptest(x, eps = 0.05, L2Fam = NormScaleFamily(mean = 1))
-est1v <- roptest(x, eps = 0.025, L2Fam = NormScaleFamily(mean = 1), 
+est1 <- roptest(x, eps = 0.05, L2Fam = NormLocationFamily(mean = 1))
+est1v <- roptest(x, eps = 0.025, L2Fam = NormLocationFamily(mean = 1),
                  neighbor = TotalVarNeighborhood())
 
 ## k-step: contamination known
-est2 <- roptest(x, eps = 0.05, L2Fam = NormScaleFamily(mean = 1), steps = 3)
-est2v <- roptest(x, eps = 0.025, L2Fam = NormScaleFamily(mean = 1), 
+est2 <- roptest(x, eps = 0.05, L2Fam = NormLocationFamily(mean = 1), steps = 3)
+est2v <- roptest(x, eps = 0.025, L2Fam = NormLocationFamily(mean = 1),
                  neighbor = TotalVarNeighborhood(), steps = 3)
 
 ## comparison
