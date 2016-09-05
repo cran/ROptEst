@@ -18,16 +18,16 @@
 minmaxBias(L2deriv, neighbor, biastype, ...)
 
 \S4method{minmaxBias}{UnivariateDistribution,ContNeighborhood,BiasType}(L2deriv,
-     neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo)
+     neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo, verbose = NULL)
 
 \S4method{minmaxBias}{UnivariateDistribution,ContNeighborhood,asymmetricBias}(
-     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo)
+     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo, verbose = NULL)
 
 \S4method{minmaxBias}{UnivariateDistribution,ContNeighborhood,onesidedBias}(
-     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo)
+     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo, verbose = NULL)
 
 \S4method{minmaxBias}{UnivariateDistribution,TotalVarNeighborhood,BiasType}(
-     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo)
+     L2deriv, neighbor, biastype, symm, trafo, maxiter, tol, warn, Finfo, verbose = NULL)
 
 \S4method{minmaxBias}{RealRandVariable,ContNeighborhood,BiasType}(L2deriv,
      neighbor, biastype, normtype, Distr, z.start, A.start,  z.comp, A.comp,
@@ -101,7 +101,7 @@ minmaxBias(L2deriv, neighbor, biastype, ...)
   Bayreuth: Dissertation.
 }
 \author{Matthias Kohl \email{Matthias.Kohl@stamats.de},
-        Peter Ruckdeschel \email{Peter.Ruckdeschel@itwm.fraunhofer.de}}
+        Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de}}
 %\note{}
 \seealso{\code{\link[RobAStBase]{InfRobModel-class}}}
 %\examples{}
