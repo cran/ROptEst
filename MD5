@@ -1,4 +1,4 @@
-498201f5d29c7be06de20065bc658d4c *DESCRIPTION
+0f9a96e3cbbb3fca8005ef065fccc358 *DESCRIPTION
 b61ffd4a6ce0109fa685c3108ad65680 *NAMESPACE
 4db1b4a2092a387872290db0fc5dc729 *R/00internal.R
 2811ef274b041f225a14e7ff7ea7f0ee *R/AllClass.R
@@ -51,7 +51,7 @@ c44814127ecad49ca3497410253a6aee *R/roptest.R
 b1eb543a3caeb5060fd19c7df8c20ce8 *R/updateNorm.R
 2b52f688d79b1b53d71d0f64ac74f0a5 *R/versionSuff.R
 e07c3249e7528927928ecb74ed27f4ed *inst/CITATION
-3efdeea6e079d85cf7016b016f8f5945 *inst/NEWS
+19a4da26c2970f3c45560c4cf2b39f47 *inst/NEWS
 482ce9ed9f04b1ff44eb648eb6b9fbb5 *inst/TOBEDONE
 1729472f4dbecead4fcf1d58da441ac2 *inst/scripts/AnscombeOrNot.R
 6f647c4b4656fabce07d6b5a95776788 *inst/scripts/BinomialModel.R
@@ -66,7 +66,7 @@ a6d5d79cf84acab36093155932139f1f *inst/scripts/NormalLocationModel.R
 8a0e1faebdb082470f0944ffe1a1e9cc *inst/scripts/NormalScaleModel.R
 1295d4618c4fa93fde5042d9255d6b68 *inst/scripts/PoissonModel.R
 3b729241d29c336cf635ebf4a115131a *inst/scripts/UnderOverShootRisk.R
-06acfb839526378c6ee561945b2039e2 *man/0ROptEst-package.Rd
+cdd860df61eabf3329c16b5e3b581cc9 *man/0ROptEst-package.Rd
 45fd5062ad0411c2d90c3bca87dec688 *man/CniperPointPlotWrapper.Rd
 09227c248d102dd73d38b017c6b2facd *man/asAnscombe-class.Rd
 7f94a041056838c98c0e57843f1f4544 *man/asAnscombe.Rd
@@ -79,7 +79,6 @@ ee00cf7b7d2f18962e2e2d7c48fb18d8 *man/comparePlot.Rd
 940be0da9ea49b817447f1c1400fd557 *man/getAsGRiskFct-methods.Rd
 0067cb3a785ebf6f13954400093507eb *man/getAsRisk.Rd
 d57a59e11fced077ca6cb3c2637ba4d0 *man/getBiasIC.Rd
-3f9568e2ee6e35a4834d9373f2fce052 *man/getFiRisk.Rd
 61a0a5d9560c3f4f02b8a8d7ed859465 *man/getFixClip.Rd
 a0e62802a57deee2c21e0fbc2313cda6 *man/getFixRobIC.Rd
 2ddd307ee2028bfc918ba487d100a343 *man/getIneffDiff.Rd
