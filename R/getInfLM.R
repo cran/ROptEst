@@ -9,6 +9,7 @@ getLagrangeMultByIter <- function(b, L2deriv, risk, trafo,
                       verbose = NULL, warnit = TRUE){
         if(missing(verbose)|| is.null(verbose))
            verbose <- getRobAStBaseOption("all.verbose")
+        if(missing(warnit)|| is.null(warnit)) warnit <- TRUE
         LMcall <- match.call()
 
         ## initialization
@@ -77,7 +78,7 @@ getLagrangeMultByIter <- function(b, L2deriv, risk, trafo,
                 cat("current precision in IC algo:\t", prec, "\n")
                 print(round(c(A=prec[1],a=prec[2]),3))
             }
-            if(prec < tol) break
+            if(!is.na(prec)) if(prec < tol) break
             if(iter > maxiter){
                 if(warnit)
                    cat("maximum iterations reached!\n",

@@ -215,7 +215,7 @@ genkStepCtrl <- function(useLast = getRobAStBaseOption("kStepUseLast"),
                     withICList = getRobAStBaseOption("withICList"),
                     withPICList = getRobAStBaseOption("withPICList"),
                     scalename = "scale", withLogScale = TRUE,
-                    withEvalAsVar = NULL){
+                    withEvalAsVar = NULL, withMakeIC = FALSE){
   es.call <- match.call()
   es.list <- as.list(es.call[-1])
   es.list <- .fix.in.defaults(es.list,genkStepCtrl)
@@ -233,5 +233,12 @@ gennbCtrl <- function(neighbor = ContNeighborhood(),
   es.call <- match.call()
   es.list <- as.list(es.call[-1])
   es.list <- .fix.in.defaults(es.list,gennbCtrl)
+ return(es.list)
+}
+genstartICCtrl <- function(withMakeIC = FALSE, withEvalAsVar = NULL,
+                           modifyICwarn = NULL){
+  es.call <- match.call()
+  es.list <- as.list(es.call[-1])
+  es.list <- .fix.in.defaults(es.list,genstartICCtrl)
  return(es.list)
 }

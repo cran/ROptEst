@@ -5,6 +5,7 @@ import("RandVar")
 import("distrMod")
 import("RobAStBase")
 importFrom("startupmsg", "buildStartupMessage", "infoShow")
+importFrom("grDevices", "dev.list")
 importFrom("graphics", "abline", "axis", "box", "par", 
            "points", "text", "matlines", "matpoints", "mtext",
            "title")
@@ -12,6 +13,7 @@ importFrom("stats", "complete.cases", "dnorm", "na.omit", "optim",
              "optimize", "pnorm", "qnorm", "uniroot")
 importFrom("utils", "read.csv", "read.table", "str", "write.table")
 importFrom("graphics", "abline")
+importFrom("MASS", "ginv")
 
 exportClasses("asAnscombe", "asL1", "asL4") 
 exportMethods("optIC", 
@@ -36,13 +38,14 @@ exportMethods("optIC",
               "getModifyIC")
 exportMethods("updateNorm", "scaleUpdateIC", "eff", 
               "get.asGRisk.fct", "getStartIC", "plot",
-			  "comparePlot", "getRiskFctBV")
+			  "comparePlot", "getRiskFctBV", "roptestCall")
 export("getL2normL2deriv",
        "asAnscombe", "asL1", "asL4", 
 	   "getReq", "getMaxIneff", "getRadius")
 export("roptest","roptest.old", "robest",
+       "OBREstimator", "RMXEstimator", "MBREstimator", "OMSEstimator",
        "getLagrangeMultByOptim","getLagrangeMultByIter")
-export("genkStepCtrl", "genstartCtrl", "gennbCtrl")
+export("genkStepCtrl", "genstartCtrl", "genstartICCtrl", "gennbCtrl")
 export("cniperCont", "cniperPoint", "cniperPointPlot")
 export(".generateInterpGrid",".getLMGrid",".saveGridToCSV", ".readGridFromCSV")
 export(".RMXE.th",".OMSE.th", ".MBRE.th")

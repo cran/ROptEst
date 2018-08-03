@@ -17,18 +17,20 @@ optIC(model, risk, ...)
                                      OptOrIter = "iterate", maxiter = 50,
                                      tol = .Machine$double.eps^0.4, warn = TRUE, 
                                      noLow = FALSE, verbose = NULL, ...,
-                                     .withEvalAsVar = TRUE,
-                                     returnNAifProblem = FALSE)
+                                     .withEvalAsVar = TRUE, withMakeIC = FALSE,
+                                     returnNAifProblem = FALSE, modifyICwarn = NULL)
 
 \S4method{optIC}{InfRobModel,asUnOvShoot}(model, risk, upper = 1e4,
                                           lower = 1e-4, maxiter = 50,
-                                          tol = .Machine$double.eps^0.4, warn = TRUE, 
-                                          verbose = NULL)
+                                          tol = .Machine$double.eps^0.4,
+                                          withMakeIC = FALSE, warn = TRUE,
+                                          verbose = NULL, modifyICwarn = NULL)
 
 \S4method{optIC}{FixRobModel,fiUnOvShoot}(model, risk, sampleSize, upper = 1e4, lower = 1e-4,
                                           maxiter = 50, tol = .Machine$double.eps^0.4, 
-                                          warn = TRUE, Algo = "A", cont = "left",
-                                          verbose = NULL)
+                                          withMakeIC = FALSE, warn = TRUE,
+                                          Algo = "A", cont = "left",
+                                          verbose = NULL, modifyICwarn = NULL)
 }
 \arguments{
   \item{model}{ probability model. }
@@ -58,9 +60,15 @@ optIC(model, risk, ...)
   \item{.withEvalAsVar}{logical (of length 1):
      if \code{TRUE}, risks based on covariances are to be
      evaluated (default), otherwise just a call is returned. }
+  \item{withMakeIC}{logical; if \code{TRUE} the [p]IC is passed through
+        \code{makeIC} before return.}
   \item{returnNAifProblem}{logical (of length 1):
      if \code{TRUE} (not the default), in case of convergence problems in
      the algorithm, returns \code{NA}. }
+  \item{modifyICwarn}{logical: should a (warning) information be added if
+     \code{modifyIC} is applied and hence some optimality information could
+     no longer be valid? Defaults to \code{NULL} in which case this value
+     is taken from \code{RobAStBaseOptions}.}
 }
 \details{ In case of the finite-sample risk \code{"fiUnOvShoot"} one can choose
   between two algorithms for the computation of this risk where the least favorable
