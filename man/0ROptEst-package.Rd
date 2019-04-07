@@ -6,41 +6,40 @@
 Optimally robust estimation
 }
 \description{
-Optimally robust estimation in general smoothly parameterized models 
+Optimally robust estimation in general smoothly parameterized models
 using S4 classes and methods.
 }
 \details{
 \tabular{ll}{
 Package: \tab ROptEst \cr
-Version: \tab 1.1.0 \cr
-Date: \tab 2018-08-01 \cr
-Depends: \tab R(>= 2.14.0), methods, distr(>= 2.5.2), distrEx(>= 2.5), distrMod(>= 2.5.2), 
-RandVar(>= 0.9.2), RobAStBase(>= 1.0) \cr
-Suggests: \tab RobLox\cr
+Version: \tab 1.2.0 \cr
+Date: \tab 2019-04-05 \cr
+Depends: \tab R(>= 3.4), methods, distr(>= 2.8.0), distrEx(>= 2.8.0),
+    distrMod(>= 2.8.0),RandVar(>= 1.2.0), RobAStBase(>= 1.2.0) \cr
+Suggests: \tab RobLox \cr
 Imports: \tab startupmsg, MASS, stats, graphics, utils, grDevices \cr
 ByteCompile: \tab yes \cr
 Encoding: \tab latin1 \cr
 License: \tab LGPL-3 \cr
 URL: \tab http://robast.r-forge.r-project.org/\cr
-VCS/SVNRevision: \tab 1081 \cr
+VCS/SVNRevision: \tab 1205 \cr
 }
 }
 \author{
 Peter Ruckdeschel \email{peter.ruckdeschel@uni-oldenburg.de},\cr%
 Matthias Kohl \email{Matthias.Kohl@stamats.de}\cr
-
 Maintainer: Matthias Kohl  \email{matthias.kohl@stamats.de}}
 \references{
   M. Kohl (2005). Numerical Contributions to the Asymptotic Theory of Robustness.
   Dissertation. University of Bayreuth.
 
-  M. Kohl, P. Ruckdeschel, H. Rieder (2010). Infinitesimally Robust Estimation in 
-  General Smoothly Parametrized Models. Statistical Methods and Application 19(3):333-354. 
+  M. Kohl, P. Ruckdeschel, H. Rieder (2010). Infinitesimally Robust Estimation in
+  General Smoothly Parametrized Models. Statistical Methods and Application 19(3):333-354.
 }
 \seealso{
-\code{\link[distr:0distr-package]{distr-package}}, 
+\code{\link[distr:0distr-package]{distr-package}},
 \code{\link[distrEx:0distrEx-package]{distrEx-package}},
-\code{\link[distrMod:0distrMod-package]{distrMod-package}}, 
+\code{\link[distrMod:0distrMod-package]{distrMod-package}},
 \code{\link[RandVar:0RandVar-package]{RandVar-package}},
 \code{\link[RobAStBase:0RobAStBase-package]{RobAStBase-package}}
 }
@@ -56,8 +55,8 @@ Note: The first two numbers of package versions do not necessarily reflect
 library(ROptEst)
 
 ## Example: Rutherford-Geiger (1910); cf. Feller~(1968), Section VI.7 (a)
-x <- c(rep(0, 57), rep(1, 203), rep(2, 383), rep(3, 525), rep(4, 532), 
-       rep(5, 408), rep(6, 273), rep(7, 139), rep(8, 45), rep(9, 27), 
+x <- c(rep(0, 57), rep(1, 203), rep(2, 383), rep(3, 525), rep(4, 532),
+       rep(5, 408), rep(6, 273), rep(7, 139), rep(8, 45), rep(9, 27),
        rep(10, 10), rep(11, 4), rep(12, 0), rep(13, 1), rep(14, 1))
 
 ## ML-estimate from package distrMod
