@@ -1,11 +1,11 @@
-76ee8f5c6e14842d222cbc8fcca1ceda *DESCRIPTION
+3d061d0b5a838a50ea8c7533a399692b *DESCRIPTION
 f1b110d338ad6574181e183a15174dc0 *NAMESPACE
 4db1b4a2092a387872290db0fc5dc729 *R/00internal.R
 396a341bf0fb6f043f3869f0e55992e9 *R/AllClass.R
 b0bc48874d6d2c6e9396168812bfc5d4 *R/AllGeneric.R
 c944246eea75f21bebfe5b8f88bdd325 *R/AllPlot.R
 44a88a1383d53eaf27cb50b48930b4a2 *R/AllShow.R
-73809a61c2b52e131f1a1c1ca438a86d *R/CheckMakeContIC.R
+d4888161328d8b8a8ce820011a287275 *R/CheckMakeContIC.R
 b69bf431dd6f2f8dbb6ea8c8ae28fa7d *R/L1L2normL2deriv.R
 0467b9008204a9711592ffe728bcf205 *R/LowerCaseMultivariate.R
 47dc40c3faae6469c2d0423ab9fd6992 *R/RMXEOMSEMBREOBRE.R
@@ -54,7 +54,7 @@ dd9b6caf07a4cd37df581555f5957398 *R/roptest.new.R
 495f297ac3c3394083c12f8a6b86d02a *R/updateNorm.R
 2b52f688d79b1b53d71d0f64ac74f0a5 *R/versionSuff.R
 e07c3249e7528927928ecb74ed27f4ed *inst/CITATION
-45a31cef9c76ecf809c6caecc4e1de09 *inst/NEWS
+c4d3b7b1bb3fbfc4c883753a6020b6c3 *inst/NEWS
 482ce9ed9f04b1ff44eb648eb6b9fbb5 *inst/TOBEDONE
 1729472f4dbecead4fcf1d58da441ac2 *inst/scripts/AnscombeOrNot.R
 3d900fe88f33ba034b8b96231f2d7ffa *inst/scripts/BinomialModel.R
@@ -69,7 +69,7 @@ a6d5d79cf84acab36093155932139f1f *inst/scripts/NormalLocationModel.R
 8a0e1faebdb082470f0944ffe1a1e9cc *inst/scripts/NormalScaleModel.R
 1295d4618c4fa93fde5042d9255d6b68 *inst/scripts/PoissonModel.R
 3b729241d29c336cf635ebf4a115131a *inst/scripts/UnderOverShootRisk.R
-97d1c43ec78bfff11bef4c5909de931c *man/0ROptEst-package.Rd
+9bcb21ad44a44641a18882fcf0352bb2 *man/0ROptEst-package.Rd
 45fd5062ad0411c2d90c3bca87dec688 *man/CniperPointPlotWrapper.Rd
 4dc051ac8ab86f5d0930d658de0ab6e7 *man/ORobEstimate-class.Rd
 5cfac048dbf8ce30eba68f6c26f624f8 *man/RMXEOMSEMBREOBRE.Rd

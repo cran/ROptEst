@@ -1,11 +1,11 @@
 Package: ROptEst
-Version: 1.2.0
-Date: 2019-04-05
+Version: 1.2.1
+Date: 2019-04-07
 Title: Optimally Robust Estimation
 Description: Optimally robust estimation in general smoothly parameterized models using S4
             classes and methods.
 Depends: R(>= 3.4), methods, distr(>= 2.8.0), distrEx(>= 2.8.0),
-        distrMod(>= 2.8.0), RandVar(>= 1.2.0), RobAStBase(>= 1.2.0)
+        distrMod(>= 2.8.1), RandVar(>= 1.2.0), RobAStBase(>= 1.2.0)
 Imports: startupmsg, MASS, stats, graphics, utils, grDevices
 Suggests: RobLox
 Authors@R: c(person("Matthias", "Kohl", role=c("cre", "cph"),
@@ -17,12 +17,12 @@ ByteCompile: yes
 License: LGPL-3
 URL: http://robast.r-forge.r-project.org/
 Encoding: latin1
-LastChangedDate: {$LastChangedDate: 2019-04-05 07:33:12 +0200 (Fr, 05.
+LastChangedDate: {$LastChangedDate: 2019-04-07 12:38:45 +0200 (So, 07.
         Apr 2019) $}
-LastChangedRevision: {$LastChangedRevision: 1216 $}
-VCS/SVNRevision: 1205
+LastChangedRevision: {$LastChangedRevision: 1220 $}
+VCS/SVNRevision: 1219
 NeedsCompilation: no
-Packaged: 2019-04-05 06:00:06 UTC; kohlm
+Packaged: 2019-04-24 17:34:12 UTC; kohlm
 Author: Matthias Kohl [cre, cph],
   Mykhailo Pupashenko [ctb] (contributed wrapper functions for diagnostic
     plots),
@@ -30,4 +30,4 @@ Author: Matthias Kohl [cre, cph],
   Peter Ruckdeschel [aut, cph]
 Maintainer: Matthias Kohl <Matthias.Kohl@stamats.de>
 Repository: CRAN
-Date/Publication: 2019-04-07 23:02:42 UTC
+Date/Publication: 2019-04-25 05:20:29 UTC
