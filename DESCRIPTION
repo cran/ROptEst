@@ -1,6 +1,6 @@
 Package: ROptEst
-Version: 1.3.4
-Date: 2024-08-29
+Version: 1.3.5
+Date: 2025-01-12
 Title: Optimally Robust Estimation
 Description: R infrastructure for optimally robust estimation in general smoothly
             parameterized models using S4 classes and methods as described Kohl, M.,
@@ -8,7 +8,7 @@ Description: R infrastructure for optimally robust estimation in general smoothl
             Rieder, H., Kohl, M., and Ruckdeschel, P. (2008), <doi:10.1007/s10260-007-0047-7>.
 Depends: R(>= 3.4), methods, distr(>= 2.8.0), distrEx(>= 2.8.0),
         distrMod(>= 2.8.1), RandVar(>= 1.2.0), RobAStBase(>= 1.2.0)
-Imports: startupmsg, MASS, stats, graphics, utils, grDevices
+Imports: startupmsg(>= 1.0.0), MASS, stats, graphics, utils, grDevices
 Suggests: RobLox
 Authors@R: c(person("Matthias", "Kohl", role=c("cre", "cph"),
             email="Matthias.Kohl@stamats.de", comment = c(ORCID = "0000-0001-9514-8910")),
@@ -20,12 +20,12 @@ ByteCompile: yes
 License: LGPL-3
 URL: http://robast.r-forge.r-project.org/
 Encoding: UTF-8
-LastChangedDate: {$LastChangedDate: 2024-08-29 22:21:57 +0200 (Do, 29.
-        Aug 2024) $}
-LastChangedRevision: {$LastChangedRevision: 1314 $}
-VCS/SVNRevision: 1313
+LastChangedDate: {$LastChangedDate: 2025-01-12 01:50:47 +0100 (So, 12.
+        Jan 2025) $}
+LastChangedRevision: {$LastChangedRevision: 1324 $}
+VCS/SVNRevision: 1323
 NeedsCompilation: no
-Packaged: 2024-09-02 07:28:35 UTC; kohlm
+Packaged: 2025-01-12 15:08:33 UTC; kohlm
 Author: Matthias Kohl [cre, cph] (<https://orcid.org/0000-0001-9514-8910>),
   Mykhailo Pupashenko [ctb] (contributed wrapper functions for diagnostic
     plots),
@@ -33,4 +33,4 @@ Author: Matthias Kohl [cre, cph] (<https://orcid.org/0000-0001-9514-8910>),
   Peter Ruckdeschel [aut, cph] (<https://orcid.org/0000-0001-7815-4809>)
 Maintainer: Matthias Kohl <Matthias.Kohl@stamats.de>
 Repository: CRAN
-Date/Publication: 2024-09-02 10:00:02 UTC
+Date/Publication: 2025-01-15 12:00:02 UTC

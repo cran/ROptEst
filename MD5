@@ -1,4 +1,4 @@
-f85b1a8fd1607b56d8ef76de609e88af *DESCRIPTION
+c23289ca2ee665dbe9b9da6972780c5f *DESCRIPTION
 f1b110d338ad6574181e183a15174dc0 *NAMESPACE
 4db1b4a2092a387872290db0fc5dc729 *R/00internal.R
 396a341bf0fb6f043f3869f0e55992e9 *R/AllClass.R
@@ -53,9 +53,9 @@ c44814127ecad49ca3497410253a6aee *R/roptest.R
 179dc366b1068cae840ad36f51d9402e *R/roptest.new.R
 fe6909e40eb72651ee0645678f20cfb7 *R/updateNorm.R
 2b52f688d79b1b53d71d0f64ac74f0a5 *R/versionSuff.R
-aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
+76161b65639451c966be75488458b3c3 *build/partial.rdb
 62f3655bde58937147dec4f9c7a3d177 *inst/CITATION
-f38a1c4755f4d5e7bc9cbf1068101cbb *inst/NEWS
+91d91147b6ef4fbb21a596617fdab89f *inst/NEWS
 482ce9ed9f04b1ff44eb648eb6b9fbb5 *inst/TOBEDONE
 9ee10b6a6adf3e34501027466fb250dd *inst/scripts/AnscombeOrNot.R
 128ac672e751f5679df3b5894350991d *inst/scripts/BinomialModel.R
@@ -71,7 +71,7 @@ a6d5d79cf84acab36093155932139f1f *inst/scripts/NormalLocationModel.R
 8e1bd3b02985d17bd2d8fcd131e13221 *inst/scripts/PoissonModel.R
 3b729241d29c336cf635ebf4a115131a *inst/scripts/UnderOverShootRisk.R
 4e362c05528f5afcb422a21e521e2aee *inst/scripts/examples_taking_longer.R
-0e71ba79ba8bb7ab6371a8d6d98e2475 *man/0ROptEst-package.Rd
+7d0a231833d839142681c22c4188eaac *man/0ROptEst-package.Rd
 45fd5062ad0411c2d90c3bca87dec688 *man/CniperPointPlotWrapper.Rd
 d94a3afb345f5a2442721859fba63ac5 *man/ORobEstimate-class.Rd
 b2a98a2a15c79b69fb4f59dab34f99b5 *man/RMXEOMSEMBREOBRE.Rd
